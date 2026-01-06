@@ -63,8 +63,22 @@ public class Manager
     }
     //==================================================================================================================
     // Gestionare rezervari
-    public IEnumerable<Reservation> GetAllReservations() => _reservations.AsReadOnly();
+    public IEnumerable<Reservation> GetActiveReservations(Admin admin) 
+        => _reservations.Where(r => r.Status == ReservationStatus.Active).ToList();
+    public IEnumerable<Reservation> GetHistoryReservations(Admin admin) 
+        => _reservations.Where(r => r.Status != ReservationStatus.Active).ToList();
 
+    // Modificare status
+    public void ForceChangeStatus(Admin admin, Guid id, ReservationStatus newStatus)
+    {
+        var res = _reservations.FirstOrDefault(r => r.ReservationID == id);
+        if (res != null)
+        {
+            var newRes = res with { Status = newStatus };
+            _reservations[_reservations.IndexOf(res)] = newRes;
+            _logger.LogInformation("Status schimbat manual de admin: {User}", admin.Username);
+        }
+    }
     //Configurare reguli, se pot modifica din HotelSettings!!!
     public void UpdateCheckInRules(TimeSpan checkInStart, TimeSpan checkOutEnd)
     {
