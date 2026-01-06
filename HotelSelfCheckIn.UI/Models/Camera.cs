@@ -1,4 +1,12 @@
+using System.Text.Json.Serialization;
+using System.Collections.Generic;
 namespace HotelSelfCheckIn.UI.Models;
+
+// Aici spui JSON-ului ce tipuri de camere exista
+[JsonDerivedType(typeof(CameraSingle), typeDiscriminator: "Single")]
+[JsonDerivedType(typeof(CameraDubla), typeDiscriminator: "Dubla")]
+[JsonDerivedType(typeof(CameraTripla), typeDiscriminator: "Tripla")]
+[JsonDerivedType(typeof(CameraFamiliala), typeDiscriminator: "Familiala")]
 
 public abstract record Camera
 {
