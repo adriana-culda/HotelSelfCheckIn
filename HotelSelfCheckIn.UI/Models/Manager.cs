@@ -79,7 +79,7 @@ public class Manager
             _logger.LogInformation("Status schimbat manual de admin: {User}", admin.Username);
         }
     }
-    //Configurare reguli, se pot modifica din HotelSettings!!!
+    //Configurare reguli, se pot modifica din HotelSettings!!!!
     public void UpdateCheckInRules(TimeSpan checkInStart, TimeSpan checkOutEnd)
     {
         _settings = _settings with { 
