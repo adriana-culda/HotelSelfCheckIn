@@ -27,7 +27,7 @@ public record TripleRoom : Room
 }
 public record FamilyRoom : Room
 {
-    public override string Type => "Double";
+    public override string Type => "Family";
     public override double PricePerNight => 450.0;
 
     public FamilyRoom(int number, List<string> facilities = null) 
