@@ -8,4 +8,9 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
+    <ItemGroup>
+      <None Remove="Assets\download.jfif" />
+      <None Include="Assets\logo.png" />
+    </ItemGroup>
+
 </Project>
