@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 //practic e motorul de cautare or sum like that (mai multi admini pot folosi acest hotel manager + ii bun pt "clean code"
 public class Manager
 {
-    private List<Room> _rooms=new();
+    private List<Room> _rooms = new();
     private List<Reservation> _reservations = new();
     private HotelSettings _settings = new(); // Pentru regulile generale
     
@@ -16,14 +16,42 @@ public class Manager
     }
     //DOAR ADMINUL ARE VOIE SA MODIFICE!!!!
     
-    //Administrare camerelor
+    //Administrare camere =======================================================================
+    //A.1. creare
     public void AddRoom(Admin admin, Room newRoom)
     {
-        //if(User is not Admin)
         _rooms.Add(newRoom);
-        _logger.LogInformation($"Adminul {admin.Username} a adăugat camera {newRoom.Number}");
+        _logger.LogInformation($"Adminul {admin.Username} a adaugat camera {newRoom.Number}");
     }
-
+    
+    //A.2. modificare
+    public void UpdateRoom(Admin admin,int roomNumber, Room newRoom)
+    {
+        var existingRoom = _rooms.FirstOrDefault(r => r.Number == roomNumber);
+        if (existingRoom is null)
+        {
+            _logger.LogWarning("Camera nr. {Num} nu exista.", roomNumber);
+            throw new KeyNotFoundException($"Camera nr. {roomNumber} nu a fost gasita.");
+        }
+        int index = _rooms.IndexOf(existingRoom);
+        _rooms[index] = newRoom;
+        _logger.LogInformation("Adminul {admin.Username} a actualizat camera nr. {Num}",admin.Username,roomNumber);
+    }
+    //A.3. stergere 
+    public void DeleteRoom(Admin admin, int roomNumber)
+    {
+        var existingRoom = _rooms.FirstOrDefault(r => r.Number == roomNumber);
+        if (existingRoom is null)
+        {
+            _logger.LogWarning("Camera nr. {Num} nu exista.", roomNumber);
+            throw new KeyNotFoundException($"Camera nr. {roomNumber} nu a fost gasita.");
+        }
+        //de verficat daca este ocupata camera (in caz de orice)
+        _rooms.Remove(existingRoom);
+        _logger.LogInformation("Adminul {admin.Username} a sters camera nr. {Num}",admin.Username,roomNumber);
+    }
+    
+    //B.Status
     public void SetRoomStatus(int roomNumber, RoomStatus newStatus)
     {
         var room = _rooms.FirstOrDefault(r => r.Number == roomNumber);
@@ -33,11 +61,11 @@ public class Manager
             _rooms[_rooms.IndexOf(room)] = updatedRoom;
         }
     }
-
+    //==================================================================================================================
     // Gestionare rezervari
     public IEnumerable<Reservation> GetAllReservations() => _reservations.AsReadOnly();
 
-    //Configurare reguli
+    //Configurare reguli, se pot modifica din HotelSettings!!!
     public void UpdateCheckInRules(TimeSpan checkInStart, TimeSpan checkOutEnd)
     {
         _settings = _settings with { 
