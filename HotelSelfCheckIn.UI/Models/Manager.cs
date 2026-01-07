@@ -16,9 +16,10 @@ public class Manager
     {
         _logger = logger;
     }
+    //==================================================================================================================
     //PS: DOAR ADMINUL ARE VOIE SA MODIFICE URMATOARELE!!!!
     
-    // I. Administrare camere =======================================================================
+    // I. Administrare camere 
     //A.1. creare
     public void AddRoom(Admin admin, Room newRoom)
     {
@@ -59,7 +60,8 @@ public class Manager
         _rooms.Remove(existingRoom);
         _logger.LogInformation("Adminul {admin.Username} a sters camera nr. {Num}",admin.Username,roomNumber);
     }
-    //A.4. Afisare camere?
+    //+ vizualizare camere
+    public IEnumerable<Room> GetAllRooms(Admin admin) => _rooms.AsReadOnly();
     //B.Status
     public void SetRoomStatus(Admin admin,int roomNumber, RoomStatus newStatus)
     {
@@ -73,10 +75,12 @@ public class Manager
         _rooms[_rooms.IndexOf(room)] = updatedRoom;
         _logger.LogInformation("Adminul {admin.Username} a modificat statusul camerei nr. {Num} in {newStatus}",admin.Username,roomNumber,newStatus);
     }
-    //==================================================================================================================
+    //__________________________________________________________________________________________________________________
     // II. Gestionare rezervari
+    // A. Vizualizare rezervari active si istorice
     public IEnumerable<Reservation> GetActiveReservations(Admin admin) 
         => _reservations.Where(r => r.Status == ReservationStatus.Active).ToList();
+    
     //Alternativa 
     /*
      public IEnumerable<Reservation> GetActiveReservations(Admin admin)
@@ -118,7 +122,7 @@ public class Manager
     }
      */
 
-    // Modificare status
+    // B. Modificare status
     public void ForceChangeStatus(Admin admin, Guid id, ReservationStatus newStatus)
     {
         var res = _reservations.FirstOrDefault(r => r.ReservationID == id);
@@ -129,7 +133,7 @@ public class Manager
             _logger.LogInformation("Status schimbat manual de admin: {User}", admin.Username);
         }
     }
-    //=======================================================================================================
+    //__________________________________________________________________________________________________________________
     // III. Configurare reguli de check in/out, se pot modifica din HotelSettings!!!!
     public void UpdateCheckInRules(Admin admin,TimeSpan checkInStart, TimeSpan checkOutEnd)
     {
@@ -139,12 +143,7 @@ public class Manager
         };
         _logger.LogInformation("Adminul {Admin} a actualizat regulile de check in/out.",admin.Username);
     }
-    //=========================================================================================================
-    //posibil de adaugat
-    //a.verificare camera pt rezervare (deoarece camera poate fi libera acum si ocupata mai tarziu si nu stiu cat de bine merge cu unavailable)
-    //b. validare rezervare
-    //Adminul este finalizat. Daca sunt probleme, sa-mi scrieti!!
-    
+    //==================================================================================================================
     public bool IsRoomAvailable(int roomNumber, DateTime start, DateTime end)
     {
         var room = _rooms.FirstOrDefault(r => r.Number == roomNumber);
@@ -162,7 +161,9 @@ public class Manager
 
         return !hasOverlap;
     }
-    //METODE CLIENTI (am inteles ca trebuie sa fie in acelasi fisier </3)
+    //METODE CLIENTI====================================================================================================
+    
+    // I. Cautarea camerelor disponibile
     public IEnumerable<Room> SearchRooms(DateTime startDate, DateTime endDate, string? type=null, List<string>? requiredFeatures=null)
     {
         return _rooms.Where(room =>
@@ -173,6 +174,9 @@ public class Manager
             return isAvailable && matchType && matchFacilities;
         }).ToList();
     }
+    //+  Afisare camere disponibile (cu status free) 
+    public IEnumerable<Room> GetRoomsForClient() 
+        => _rooms.Where(r => r.Status == RoomStatus.Free).ToList();
     /*public void PerformCheckIn(Client client, Guid reservationId)
     {
         var res = _reservations.FirstOrDefault(r => r.ReservationID == reservationId && r.Username == client.Username);
@@ -190,15 +194,17 @@ public class Manager
     
         _logger.LogInformation("Clientul {User} a efectuat check-in pentru camera {Num}", client.Username, res.RoomNumber);
     }*/
+    // II. Crearea unei rezervari
+    // Model cerere aprobare client/admin pentru rezervari _____________________________________________________________
     public void ClientRequestReservation(Client client,int roomNumber,DateTime startDate, DateTime endDate)
     {
         if(!IsRoomAvailable(roomNumber, startDate, endDate))
             throw new InvalidOperationException("Camera nu e valabila");
+        
         var request= new Reservation(Guid.NewGuid(), client.Username, roomNumber, startDate, endDate,ReservationStatus.Pending);
         _reservations.Add(request);
         _logger.LogInformation("Clientul {User} a trimis o cerere de rezervare pentru Camera nr. {Num}",client.Username,roomNumber);
     }
-
     public void AdminConfirmReservation(Admin admin, Guid reservationId)
     {
         var pendingReservation = _reservations.FirstOrDefault(r => r.ReservationID == reservationId);
@@ -213,6 +219,99 @@ public class Manager
         SetRoomStatus(admin, pendingReservation.RoomNumber, RoomStatus.Occupied);
         _logger.LogInformation("Adminul {Admin} a confirmat rezervarea pentru {User}. Camera {Num} este ocupata.", admin.Username, pendingReservation.Username, pendingReservation.RoomNumber);
     }
-    
-}
+    //ADMIN- FINALIZARE REZERVARE (o baga in sistem ca si completed)
+    public void AdminFinalizeReservation(Admin admin, Guid reservationId)
+    {
+        var res = _reservations.FirstOrDefault(r => r.ReservationID == reservationId);
+        if (res != null)
+        {
+            _reservations[_reservations.IndexOf(res)] = res with {Status = ReservationStatus.Completed};
+            SetRoomStatus(admin, res.RoomNumber, RoomStatus.Cleaning); //am pus sa fie imd valabila, pt proiect nu prea conteaza
+            SetRoomStatus(admin, res.RoomNumber, RoomStatus.Free);
+            _logger.LogInformation("Adminul a finalizat sejurul pentru rezervare {Id}",reservationId);
+        }
+    }
+    //__________________________________________________________________________________________________________________
+    // III. Check in/out -> marcare
+    public void PerformCheckin(Client client, Guid reservationId)
+    {
+        var res = _reservations.FirstOrDefault(r => r.ReservationID == reservationId  && r.Username == client.Username);
+        if (res == null) throw new KeyNotFoundException("Rezervare inexistenta");
+        
+        bool isCorrectDay = DateTime.Now.Date == res.StartDate.Date;
+        bool isAfterCheckInHour = DateTime.Now.TimeOfDay >= _settings.CheckInStart;
+        
+        if(!isCorrectDay || !isAfterCheckInHour)
+            throw new InvalidOperationException($"Check in permis doar in ziua de {res.StartDate.ToShortDateString()} dupa ora {_settings.CheckInStart}.");
+        
+        int index = _reservations.IndexOf(res);
+        _reservations[index] = res with {Status = ReservationStatus.Active};
+        _logger.LogInformation("Clientul {User} a efectuat check in digital pentru camera nr.{Num}.",client.Username,reservationId);
+    }
 
+    public void PerformCheckout(Client client, Guid reservationId)
+    {
+        var res = _reservations.FirstOrDefault(r => r.ReservationID == reservationId && r.Username == client.Username);
+        if (res == null) throw new KeyNotFoundException("Rezervare inexistenta");
+        if (res.Status != ReservationStatus.Active) throw new InvalidOperationException("Nu se poate face checkout pentru o rezervare inactiva");
+        
+        int index = _reservations.IndexOf(res);
+        _reservations[index] = res with {Status = ReservationStatus.Completed};
+        
+        var room= _rooms.FirstOrDefault(r => r.Number == res.RoomNumber);
+        if (room != null)
+        {
+            //_rooms[_rooms.IndexOf(room)] = room with {Status = RoomStatus.Cleaning};
+            _rooms[_rooms.IndexOf(room)] = room with {Status = RoomStatus.Free};
+        }
+        _logger.LogInformation("Clientul {User} a efectuat check out digital", client.Username);
+    }
+    //__________________________________________________________________________________________________________________
+    // IV. Gestionare rezervari personale
+    
+    // 1. Vizualizare rezervari
+    public IEnumerable<Reservation> GetMyReservations(Client client) =>
+        _reservations.Where(r => r.Username ==client.Username).ToList();
+    // 2. Anulare rezervare
+    public void CancelReservation(Client client, Guid reservationId)
+    {
+        var res = _reservations.FirstOrDefault(r => r.ReservationID == reservationId && r.Username == client.Username);
+        if (res == null)
+        {
+            _logger.LogWarning("Clientul {User} a incercat sa anuleze o rezervare inexistenta", client.Username);
+            throw new KeyNotFoundException("Rezervare inexistenta");
+        }
+        if(res.Status == ReservationStatus.Completed)
+            throw new InvalidOperationException("Nu ai voie sa anulezi o rezervare finalizata");
+        
+        int index = _reservations.IndexOf(res);
+        _reservations[index] = res with {Status = ReservationStatus.Cancelled};
+        _logger.LogInformation("Clientul {User} si-a anulat rezervarea {Id}",client.Username,reservationId);
+    }
+    //3. Modificare rezervare
+    public void UpdateReservation(Client client, Guid reservationId,DateTime newStart, DateTime newEnd)
+    {
+        var res = _reservations.FirstOrDefault(r => r.ReservationID == reservationId && r.Username == client.Username);
+        if (res == null)
+            throw new KeyNotFoundException("Rezervare inexistenta");
+        
+        bool isAvailable = !_reservations.Any(other => 
+            other.ReservationID != reservationId && 
+            other.RoomNumber == res.RoomNumber &&
+            other.Status == ReservationStatus.Active &&
+            newStart < other.EndDate &&
+            newEnd > other.StartDate);
+        
+        if (!isAvailable)
+            throw new KeyNotFoundException("Camera nu e disponibila");
+        
+        int index = _reservations.IndexOf(res);
+        _reservations[index] = res with {StartDate =  newStart, EndDate = newEnd};
+        
+        _logger.LogInformation("Clientul {User} si-a modificat perioada rezervarii {Id}",client.Username,reservationId);
+    }
+    
+    // V. Istoric Sejururi ____________________________________________________________________________________________
+    public IEnumerable<Reservation> GetMyHistory(Client client) =>
+        _reservations.Where(r => r.Username == client.Username && r.Status == ReservationStatus.Completed).ToList();
+}
