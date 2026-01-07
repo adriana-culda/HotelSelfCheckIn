@@ -314,4 +314,29 @@ public class Manager
     // V. Istoric Sejururi ____________________________________________________________________________________________
     public IEnumerable<Reservation> GetMyHistory(Client client) =>
         _reservations.Where(r => r.Username == client.Username && r.Status == ReservationStatus.Completed).ToList();
+    //==================================================================================================================
+    //Metode creare user + autentificare user
+    private List<User> _users = new(); 
+    public void RegisterUser(User newUser) 
+    {
+        if (!_users.Any(u => u.Username == newUser.Username))
+        {
+            _users.Add(newUser);
+            _logger.LogInformation($"Utilizator nou creat: {newUser.Username}");
+        }
+    }
+    public User? Authenticate(string username, string password)
+    {
+        return _users.FirstOrDefault(u => u.Username == username && u.Password == password);
+    }
+    //==================================================================================================================
+    //Reluare date </3
+    public void LoadData(List<Room> rooms, List<Reservation> reservations)
+    {
+        this._rooms = rooms ?? new List<Room>();
+        this._reservations = reservations ?? new List<Reservation>();
+        //_logger.LogInformation($"[Sistem] Date incarcate: {_rooms.Count} camere si {_reservations.Count} rezervari");
+        Console.WriteLine($"[Sistem] Date incarcate: {_rooms.Count} camere si {_reservations.Count} rezervari.");
+        //sincer la ora asta nu mai stiam daca trebuia logger sau nu
+    }
 }

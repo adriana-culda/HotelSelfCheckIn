@@ -12,17 +12,17 @@ namespace HotelSelfCheckIn.UI.Models
     {
         private const string RoomsFile = "camere.json";
         private const string ResFile = "rezervari.json";
-        
+
         //optiune pt salvare/recunoastere tipuri camere
         private readonly JsonSerializerOptions _options = new()
         {
-            WriteIndented = true,  //<- pentru a fi mai usor de citit
+            WriteIndented = true, //<- pentru a fi mai usor de citit
             ReferenceHandler = ReferenceHandler.IgnoreCycles
         };
 
         public void Save(List<Room> rooms, List<Reservation> res)
         {
-            try 
+            try
             {
                 string roomsJson = JsonSerializer.Serialize(rooms, _options);
                 File.WriteAllText(RoomsFile, roomsJson);
@@ -38,7 +38,7 @@ namespace HotelSelfCheckIn.UI.Models
 
         public (List<Room>, List<Reservation>) Load()
         {
-            try 
+            try
             {
                 List<Room> rooms = new();
                 List<Reservation> res = new();
@@ -57,7 +57,7 @@ namespace HotelSelfCheckIn.UI.Models
 
                 return (rooms, res);
             }
-            catch 
+            catch
             {
                 // Se returneaza o lista goala daca fisierul e corrupt
                 return (new List<Room>(), new List<Reservation>());
