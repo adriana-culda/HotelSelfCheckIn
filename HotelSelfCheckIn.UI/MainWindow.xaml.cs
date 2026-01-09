@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Windows;
+using HotelSelfCheckIn.UI.Views;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -19,5 +20,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        ViewContainer.Content = new LoginView();
     }
+    
 }

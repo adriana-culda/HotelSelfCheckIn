@@ -10,4 +10,3 @@ namespace HotelSelfCheckIn.UI;
 public partial class App : Application
 {
 }
-
