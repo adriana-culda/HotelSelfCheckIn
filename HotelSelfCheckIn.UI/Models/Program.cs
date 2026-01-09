@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using HotelSelfCheckIn.UI.Models;
 
-//Host : nu am idee ce fac dar sper ca merge
+
 //Configurare host-----------------------------------
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
@@ -20,48 +20,54 @@ var manager = host.Services.GetRequiredService<Manager>();
 var fileService = host.Services.GetRequiredService<FileService>();
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
-
+manager.RegisterUser(new Admin("admin", "admin"));
 
 //incarcare datele salvate daca exista------------------------------
 var (camere, rezervari) = fileService.Load(); 
 manager.LoadData(camere, rezervari);
 
 logger.LogInformation("Aplicatia a pornit cu succes!");
-//Ecran pornire
-Console.WriteLine("1. Login");
-Console.WriteLine("2. Register [Client only]");
-Console.WriteLine("0. Iesire");
-string? choice = Console.ReadLine();
-if (choice == "2")
-{
-    Console.WriteLine("Alege Username: "); //de verificat daca nu exista un user deja existent
-    string ? username = Console.ReadLine();
-    Console.WriteLine("Alege Parola: ");
-    string ? parola = Console.ReadLine();
-    manager.RegisterUser(new Client(username, parola));
-    Console.WriteLine("Contul a fost creat cu succes!");
-}
-
-if (choice == "0") return;
-if (choice == "1")
-{
-    Console.WriteLine("Username: "); 
-    string ? user = Console.ReadLine();
-    Console.WriteLine("Parola: ");
-    string ? paro = Console.ReadLine();
-    var ultilizatorLogat = manager.Authenticate(user, paro);
-
-    if (ultilizatorLogat is Admin admin)
+bool autentificare = false;
+while (!autentificare)
     {
-        RunAdminMenu(manager, admin,fileService);
+    //Ecran pornire
+    Console.WriteLine("1. Login");
+    Console.WriteLine("2. Register [Client only]");
+    Console.WriteLine("0. Iesire");
+    string choice = Console.ReadLine() ?? "";
+    if (choice == "2")
+    {
+        Console.WriteLine("Alege Username: "); //de verificat daca nu exista un user deja existent : NU E FACUT 
+        string ? username = Console.ReadLine();
+        Console.WriteLine("Alege Parola: ");
+        string ? parola = Console.ReadLine();
+        manager.RegisterUser(new Client(username, parola));
+        Console.WriteLine("Contul a fost creat cu succes!");
     }
-    else if (ultilizatorLogat is Client client)
+
+    if (choice == "0") return;
+    if (choice == "1")
     {
-        RunClientMenu(manager, client, fileService); 
-    }
-    else
-    {
-        Console.WriteLine("Date incorecte!");
+        Console.WriteLine("Username: "); 
+        string ? user = Console.ReadLine();
+        Console.WriteLine("Parola: ");
+        string ? paro = Console.ReadLine();
+        var ultilizatorLogat = manager.Authenticate(user, paro);
+
+        if (ultilizatorLogat is Admin admin)
+        {
+            autentificare = true;
+            RunAdminMenu(manager, admin,fileService);
+        }
+        else if (ultilizatorLogat is Client client)
+        {
+            autentificare = true;
+            RunClientMenu(manager, client, fileService); 
+        }
+        else
+        {
+            Console.WriteLine("Date incorecte!");
+        }
     }
 }
 void RunAdminMenu(Manager mgr, Admin admin, FileService fs)
