@@ -6,19 +6,29 @@
              xmlns:local="clr-namespace:HotelSelfCheckIn.UI.Views"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1000">
+    
     <Grid>
+        
+        <!-->Impartirea paginii<-->
         <Grid.ColumnDefinitions> 
             <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Background="Black"> 
+        
+        <!-->Meniul din stanga<-->
+        <Border Grid.Column="0" Background="Black">
+             
             <StackPanel Margin="0,20">
+                
+                <!-->Logo<-->
                 <Image Source="/Assets/logo.png" 
                        Width="60" 
                        Height="60" 
                        Margin="0,0,0,10" 
                        Stretch="Uniform">
                 </Image>
+                
+                <!-->Text mare sus<-->
                 <TextBlock Text="Hotel Management System" 
                            Foreground="White"
                            FontSize="14"
@@ -27,6 +37,8 @@
                            Margin="10,0,10,30"
                            TextWrapping="Wrap">
                 </TextBlock>
+                
+                <!-->Buton Dashboard<-->
                 <Button Content="Dashboard"
                         Click="Nav_Click" 
                         Tag="Dashboard"
@@ -39,6 +51,8 @@
                         HorizontalContentAlignment="Left"
                         Padding="20,0,0,0">
                 </Button>
+                
+                <!-->Buton Client<-->
                 <Button Content="Client"
                         Click="Nav_Click" 
                         Tag="Client"
@@ -50,6 +64,8 @@
                         HorizontalAlignment="Left"
                         Padding="20,0,0,0">
                 </Button>
+                
+                <!-->Buton Room<-->
                 <Button Content="Room"
                         Click="Nav_Click"
                         Tag="Room"
@@ -61,6 +77,8 @@
                         HorizontalAlignment="Left"
                         Padding="20,0,0,0">
                 </Button>
+                
+                <!-->Buton Reservation<-->
                 <Button Content="Reservation"
                         Click="Nav_Click"
                         Tag="Reservation"
@@ -72,6 +90,8 @@
                         HorizontalAlignment="Left"
                         Padding="20,0,0,0">
                 </Button>
+                
+                <!-->Buton Setting<-->
                 <Button Content="Setting"
                         Click="Nav_Click" 
                         Tag="Setting"
@@ -83,24 +103,56 @@
                         HorizontalAlignment="Left"
                         Padding="20,0,0,0">
                 </Button>
+                
             </StackPanel>
         </Border>
+        
         <Grid Grid.Column="1">
+            
+            <!-->Impartire bara albastra<-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Background="#00B4D8">
+                
                 <DockPanel Margin="20,0">
-                    <TextBlock Text="{Binding CurrentDateTime}" VerticalAlignment="Center" Foreground="White" FontSize="13"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding AdminName, StringFormat='Welcome: {0}'}" Foreground="White" Margin="0,0,20,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
-                        <Button Content="Log Out" Foreground="White" Background="Transparent" BorderThickness="0" Cursor="Hand"/>
+                    
+                    <!-->Afisare data curenta<-->
+                    <TextBlock Text="{Binding CurrentDateTime}"
+                               VerticalAlignment="Center"
+                               Foreground="White" 
+                               FontSize="13">
+                    </TextBlock>
+                    
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right" 
+                                VerticalAlignment="Center">
+                        
+                        <!-->Afisare nume admin<-->
+                        <TextBlock Text="{Binding AdminName, StringFormat='Welcome: {0}'}" 
+                                   Foreground="White"
+                                   Margin="0,0,20,0" 
+                                   VerticalAlignment="Center" 
+                                   FontWeight="SemiBold">
+                        </TextBlock>
+                        
+                        <!-->Buton Log out<-->
+                        <Button Content="Log Out" 
+                                Foreground="White"
+                                Background="Transparent"
+                                BorderThickness="0" 
+                                Cursor="Hand">
+                        </Button>
                     </StackPanel>
+                    
                 </DockPanel>
             </Border>
+            
+            <!-->Legatura<-->
             <ContentControl x:Name="AdminContentDisplay" Grid.Row="1" />
         </Grid>
+        
     </Grid>
 </UserControl>
