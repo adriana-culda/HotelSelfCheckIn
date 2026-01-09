@@ -9,7 +9,7 @@
              Background="White">
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
-            <Image Source="/Assets/logo.png" 
+            <Image Source="pack://application:,,,/Assets/logo.png"
                    Width="100" 
                    Height="100" 
                    Margin="0,0,0,20"/>

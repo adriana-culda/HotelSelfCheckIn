@@ -10,7 +10,7 @@
 
     <ItemGroup>
       <None Remove="Assets\download.jfif" />
-      <None Include="Assets\logo.png" />
+      <Resource Include="Assets\logo.png" />
     </ItemGroup>
 
 </Project>
