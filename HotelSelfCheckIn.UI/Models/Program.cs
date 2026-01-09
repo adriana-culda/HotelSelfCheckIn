@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -69,13 +70,44 @@ void RunAdminMenu(Manager mgr, Admin admin, FileService fs)
     while (!logout)
     {
         Console.WriteLine($"\n--- MENIU ADMIN: {admin.Username} ---");
-        Console.WriteLine("1. Adaugă Cameră");
+        Console.WriteLine("1. Administrare Camere");
+        Console.WriteLine("2. Administrare Rezervari");
         Console.WriteLine("0. Logout");
-        Console.Write("Alege: ");
+        Console.Write("\nAlege: ");
         
         string? opt = Console.ReadLine();
-        if (opt == "1") {
-            // Aici de completat metode
+        if (opt == "1")
+        {
+            bool logout1 = false;
+            while (!logout1)
+            {
+                Console.WriteLine("\n--- Meniu Administrare Camere ---");
+                Console.WriteLine("1. Creare Camera");
+                Console.WriteLine("2. Modificare Camera");
+                Console.WriteLine("3. Stergere Camera");
+                Console.WriteLine("4. Setare Status Camera");
+                Console.WriteLine("0. Logout");
+                
+                string? opt1 = Console.ReadLine();
+                if (opt1 == "1")
+                {
+                    Console.Write("Introduceți numărul camerei (int): ");
+                    if (int.TryParse(Console.ReadLine(), out int nr))
+                    {
+                       Console.WriteLine($"Tip camera:\n1.Single, 2.Double, 3.Triple, 4.Family"); 
+                       string? tip = Console.ReadLine();
+                       Room? cameraNoua = tip switch
+                       {
+                           "1" => new SingleRoom(nr),
+                           "2" => new DoubleRoom(nr),
+                           "3" => new TripleRoom(nr),
+                           "4" => new FamilyRoom(nr),
+                           _ => null
+                       };
+                    }
+                }
+                else if (opt1 == "0") logout1 = true;
+            }
         }
         else if (opt == "0") logout = true;
     }
