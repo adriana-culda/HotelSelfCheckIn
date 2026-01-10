@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -50,14 +51,12 @@ while (!autentificare)
     Console.WriteLine("0. Iesire");
 
     Console.WriteLine("Alege optiunea: ");
-    string choice = "";
-    while (string.IsNullOrWhiteSpace(choice))
+    string choice = Console.ReadLine() ?? "";
+    if (string.IsNullOrWhiteSpace(choice)) continue;
+    Console.WriteLine($"Ai ales optiunea {choice}.");
+    
+    if (choice == "1")
     {
-        choice = Console.ReadLine() ?? "";
-        Console.WriteLine($"Ai ales optiunea {choice}.");
-        
-        if (choice == "1")
-        {
             Console.WriteLine("Username: ");
             string user = Console.ReadLine() ?? "";
             Console.WriteLine("Parola: ");
@@ -84,9 +83,9 @@ while (!autentificare)
                 }
             }
             else Console.WriteLine("Date invalide!");
-        }
-        else if (choice == "2")
-        {
+    }
+    else if (choice == "2")
+    {
             Console.WriteLine("\n CREARE CONT CLIENT ");
             Console.WriteLine("Alege Username: "); //de verificat daca nu exista un user deja existent : NU E FACUT 
             string username = Console.ReadLine() ?? "";
@@ -100,9 +99,9 @@ while (!autentificare)
                 Console.ReadKey();
             }
             else Console.WriteLine("Date invalide!");
-        }
-        else if (choice == "0") return;
     }
+    else if (choice == "0") return;
+    
 }
 void RunAdminMenu(Manager mgr, Admin admin, FileService fs)
 {
@@ -303,7 +302,7 @@ void RunAdminMenu(Manager mgr, Admin admin, FileService fs)
                     Console.WriteLine("Introdu GUID-ul Rezervarii pt finalizare");
                     if (Guid.TryParse(Console.ReadLine(), out Guid id))
                     {
-                        mgr.AdminConfirmReservation(admin, id);
+                        mgr.AdminFinalizeReservation(admin, id);
                         fs.Save(mgr.GetAllRooms(admin).ToList(), mgr.GetActiveReservations(admin).ToList());
                         Console.WriteLine("Sejur finalizat manual. Camera este libera");
                     }
@@ -347,17 +346,17 @@ void RunClientMenu(Manager mgr, Client client, FileService fs)
         Console.WriteLine($"\n--- MENIU CLIENT: {client.Username} ---");
         Console.WriteLine("1. Cauta Camere disponibile");
         Console.WriteLine("2. Creaza o cerere pentru rezervare");// nu uita de metoda de admin
-        Console.WriteLine("3. Setare Check in/out");
-        Console.WriteLine("4. Gestionare rezervari personale");
-        Console.WriteLine("5. Istoric Sejururi");
+        Console.WriteLine("3. Gestionare rezervari personale");
+        Console.WriteLine("4. Istoric Sejururi");
         Console.WriteLine("0. Logout");
         Console.Write("Alege: ");
 
         string? opt = Console.ReadLine();
         if (opt == "1")
         {
-            var disp = mgr.GetAllRooms(new Admin("system", "system"))
-                .Where(r => r.Status == RoomStatus.Free).ToList();
+            //var disp = mgr.GetAllRooms(new Admin("system", "system"))
+            //    .Where(r => r.Status == RoomStatus.Free).ToList();
+            var disp = mgr.GetRoomsForClient();
             Console.WriteLine("    CAMERE DISPONIBILE    ");
             if(!disp.Any()) Console.WriteLine("Nu sunt camere disponibile");
             foreach (var r in disp)
@@ -389,6 +388,69 @@ void RunClientMenu(Manager mgr, Client client, FileService fs)
                 Console.WriteLine(e);
                 //throw;
             }
+        }
+        else if (opt == "3")
+        {
+            Console.Clear();
+            var mele = mgr.GetMyReservations(client).ToList();
+            Console.WriteLine("REZERVARILE TALE");
+            foreach (var r in mele)
+                Console.WriteLine($"ID: {r.ReservationID.ToString()} | Camera: {r.RoomNumber} | Status: {r.Status}");
+            Console.WriteLine("\n1. Check in");
+            Console.WriteLine("2. Check out");
+            Console.WriteLine("3. Anulare rezervare");
+            Console.WriteLine("\nAlege: ");
+            string subopt = Console.ReadLine() ?? "";
+            
+            Console.WriteLine("Introdu ID-ul rezervarii [guid]: ");
+            string inputId = Console.ReadLine() ?? "";
+
+            if (Guid.TryParse(inputId, out Guid guid))
+            {
+                try
+                {
+                    if (subopt == "1")
+                    {
+                        mgr.PerformCheckin(client, guid);
+                        Console.WriteLine("Check in reusit");
+                    }
+                    else if (subopt == "2")
+                    {
+                        mgr.PerformCheckout(client, guid);
+                        Console.WriteLine("Check out reusit");
+                    }
+                    else if (subopt == "3")
+                    {
+                        mgr.CancelReservation(client, guid);
+                        Console.WriteLine("Rezervare anulata");
+                    }
+                    fs.Save(mgr.GetAllRooms( new Admin("sys","sys")).ToList(),mgr.GetActiveReservations(new Admin("sys","sys")).ToList());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    //throw;
+                }
+            }
+            else
+            {
+                Console.WriteLine("ID invalid");
+            }
+            Console.WriteLine("\n apasa orice tasta pt a continua...");
+            Console.ReadKey();
+        }
+        else if (opt == "4")
+        {
+            var istoric = mgr.GetMyHistory(client).ToList();
+            Console.WriteLine("\n--- ISTORIC REZERVARI ---");
+            if (!istoric.Any()) Console.WriteLine("Nu ai sejururi finalizate.");
+    
+            foreach (var s in istoric)
+            {
+                Console.WriteLine($"Cazare: {s.StartDate:dd/MM} - {s.EndDate:dd/MM} | Camera: {s.RoomNumber}");
+            }
+            Console.WriteLine("\nApasa orice tasta pentru a reveni...");
+            Console.ReadKey();
         }
         else if (opt == "0") logout = true;
     }
