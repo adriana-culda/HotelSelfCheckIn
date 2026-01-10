@@ -132,6 +132,7 @@ public class Manager
             _reservations[_reservations.IndexOf(res)] = newRes;
             _logger.LogInformation("Status schimbat manual de admin: {User}", admin.Username);
         }
+        else throw new KeyNotFoundException("Rezervarea nu a fost gasita");
     }
     //__________________________________________________________________________________________________________________
     // III. Configurare reguli de check in/out, se pot modifica din HotelSettings!!!!
