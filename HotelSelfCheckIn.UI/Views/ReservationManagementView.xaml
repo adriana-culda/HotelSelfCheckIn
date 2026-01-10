@@ -37,12 +37,15 @@
                       BorderThickness="0"
                       Margin="10">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
-                    <DataGridTextColumn Header="Client Name" Binding="{Binding ClientName}" Width="*"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ReservationID}" Width="50"/>
+                    
+                    <DataGridTextColumn Header="Client Name" Binding="{Binding Username}" Width="*"/>
+                    
                     <DataGridTextColumn Header="Room No." Binding="{Binding RoomNumber}" Width="80"/>
                     
-                    <DataGridTextColumn Header="Check-In" Binding="{Binding CheckInDate, StringFormat=\{0:dd-MMM-yyyy\}}" Width="*"/>
-                    <DataGridTextColumn Header="Check-Out" Binding="{Binding CheckOutDate, StringFormat=\{0:dd-MMM-yyyy\}}" Width="*"/>
+                    <DataGridTextColumn Header="Check-In" Binding="{Binding StartDate, StringFormat=\{0:dd-MMM-yyyy\}}" Width="*"/>
+                    
+                    <DataGridTextColumn Header="Check-Out" Binding="{Binding EndDate, StringFormat=\{0:dd-MMM-yyyy\}}" Width="*"/>
                     
                     <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
                     

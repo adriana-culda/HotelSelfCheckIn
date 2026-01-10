@@ -12,9 +12,11 @@ public class Manager
     
     private readonly ILogger<Manager> _logger;
     //  constructor
-    public Manager(ILogger<Manager> logger)
+    public Manager(ILogger<Manager>? logger = null)
     {
         _logger = logger;
+        _users.Add(new Admin("admin", "admin"));
+        _users.Add(new Client("client", "client"));
     }
     //==================================================================================================================
     //PS: DOAR ADMINUL ARE VOIE SA MODIFICE URMATOARELE!!!!
@@ -339,4 +341,5 @@ public class Manager
         Console.WriteLine($"[Sistem] Date incarcate: {_rooms.Count} camere si {_reservations.Count} rezervari.");
         //sincer la ora asta nu mai stiam daca trebuia logger sau nu
     }
+    
 }

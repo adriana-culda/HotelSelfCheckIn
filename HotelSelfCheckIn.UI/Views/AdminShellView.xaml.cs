@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using HotelSelfCheckIn.UI.ViewModels;
 
 namespace HotelSelfCheckIn.UI.Views;
 
@@ -8,30 +9,19 @@ public partial class AdminShellView : UserControl
     public AdminShellView()
     {
         InitializeComponent();
-        AdminContentDisplay.Content = new AdminView();
     }
+
     private void Nav_Click(object sender, RoutedEventArgs e)
     {
-        var btn = sender as Button;
-        if (btn == null || btn.Tag == null) return;
-
-        switch (btn.Tag.ToString())
+        // 1. Aflăm ce buton s-a apăsat
+        if (sender is Button btn && btn.Tag is string destination)
         {
-            case "Dashboard":
-                AdminContentDisplay.Content = new AdminView();
-                break;
-            case "Client":
-                AdminContentDisplay.Content = new ClientManagementView();
-                break;
-            case "Room":
-                AdminContentDisplay.Content = new RoomManagementView();
-                break;
-            case "Reservation":
-                AdminContentDisplay.Content = new ReservationManagementView();
-                break;
-            case "Setting":
-                AdminContentDisplay.Content = new SettingView();
-                break;
+            // 2. Accesăm ViewModel-ul din spate
+            if (DataContext is AdminShellViewModel vm)
+            {
+                // 3. Îi spunem să schimbe pagina
+                vm.Navigate(destination);
+            }
         }
     }
 }

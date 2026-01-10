@@ -29,13 +29,13 @@ public class DataService
     {
         string fullPath = Path.Combine(_dataFolder, fileName);
         
-        //  Trebuie sa fie citibil de oameni, cu spatii si randuri noi
+      
         var options = new JsonSerializerOptions { WriteIndented = true };
         
-        // Transformam obiectul în text
+       
         string json = JsonSerializer.Serialize(data, options);
         
-        // Scriem textul în fisier
+     
         File.WriteAllText(fullPath, json);
     }
     

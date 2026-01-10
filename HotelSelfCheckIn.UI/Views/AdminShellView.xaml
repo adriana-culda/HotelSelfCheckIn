@@ -100,7 +100,7 @@
                     </StackPanel>
                 </DockPanel>
             </Border>
-            <ContentControl x:Name="AdminContentDisplay" Grid.Row="1" />
+            <ContentControl Content="{Binding CurrentView}" Grid.Row="1" />
         </Grid>
     </Grid>
 </UserControl>

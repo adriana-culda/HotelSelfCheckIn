@@ -1,67 +1,77 @@
-using System;
 using System.Collections.Generic;
-using System.IO; 
+using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using HotelSelfCheckIn.UI.Models;
 
-//File service este memoria aplicatiei!! (Sa nu se stearga datele cand se inchide aplicatia)
-namespace HotelSelfCheckIn.UI.Models
+namespace HotelSelfCheckIn.UI.Models;
+
+public class FileService
 {
-    public class FileService
+    // DEFINIM CĂILE CORECT
+    private const string FolderName = "SavedData";
+    private const string NumeFisierCamere = "camere.json";
+    private const string NumeFisierRezervari = "rezervari.json";
+
+    public FileService()
     {
-        private const string RoomsFile = "camere.json";
-        private const string ResFile = "rezervari.json";
-
-        //optiune pt salvare/recunoastere tipuri camere
-        private readonly JsonSerializerOptions _options = new()
+        // Asigurăm că folderul există la pornire
+        if (!Directory.Exists(FolderName))
         {
-            WriteIndented = true, //<- pentru a fi mai usor de citit
-            ReferenceHandler = ReferenceHandler.IgnoreCycles
-        };
+            Directory.CreateDirectory(FolderName);
+        }
+    }
 
-        public void Save(List<Room> rooms, List<Reservation> res)
+    public (List<Room>, List<Reservation>) Load()
+    {
+        // Construim calea completă: SavedData/camere.json
+        string pathCamere = Path.Combine(FolderName, NumeFisierCamere);
+        string pathRezervari = Path.Combine(FolderName, NumeFisierRezervari);
+
+        var rooms = LoadData<Room>(pathCamere);
+        var reservations = LoadData<Reservation>(pathRezervari);
+        
+        return (rooms, reservations);
+    }
+
+    // --- METODELE NOI PENTRU SALVARE (SEED DATA) ---
+    public void SaveRooms(List<Room> rooms)
+    {
+        Save(NumeFisierCamere, rooms);
+    }
+
+    public void SaveReservations(List<Reservation> reservations)
+    {
+        Save(NumeFisierRezervari, reservations);
+    }
+    // -----------------------------------------------
+
+    private List<T> LoadData<T>(string path)
+    {
+        if (!File.Exists(path))
         {
-            try
-            {
-                string roomsJson = JsonSerializer.Serialize(rooms, _options);
-                File.WriteAllText(RoomsFile, roomsJson);
-
-                string resJson = JsonSerializer.Serialize(res, _options);
-                File.WriteAllText(ResFile, resJson);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Eroare la salvare: {ex.Message}");
-            }
+            return new List<T>();
         }
 
-        public (List<Room>, List<Reservation>) Load()
+        try
         {
-            try
-            {
-                List<Room> rooms = new();
-                List<Reservation> res = new();
-
-                if (File.Exists(RoomsFile))
-                {
-                    string json = File.ReadAllText(RoomsFile);
-                    rooms = JsonSerializer.Deserialize<List<Room>>(json, _options) ?? new();
-                }
-
-                if (File.Exists(ResFile))
-                {
-                    string json = File.ReadAllText(ResFile);
-                    res = JsonSerializer.Deserialize<List<Reservation>>(json, _options) ?? new();
-                }
-
-                return (rooms, res);
-            }
-            catch
-            {
-                // Se returneaza o lista goala daca fisierul e corrupt
-                return (new List<Room>(), new List<Reservation>());
-            }
+            string json = File.ReadAllText(path);
+            return JsonSerializer.Deserialize<List<T>>(json) ?? new List<T>();
         }
+        catch
+        {
+            return new List<T>();
+        }
+    }
+    
+    // Metoda generică de salvare
+    private void Save<T>(string fileName, List<T> data)
+    {
+        // Combinăm Folderul cu Numele fișierului
+        string path = Path.Combine(FolderName, fileName);
+        
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string json = JsonSerializer.Serialize(data, options);
+        
+        File.WriteAllText(path, json);
     }
 }
