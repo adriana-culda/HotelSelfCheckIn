@@ -15,8 +15,13 @@ public class Manager
     public Manager(ILogger<Manager>? logger = null)
     {
         _logger = logger;
-        _users.Add(new Admin("admin", "admin"));
-        _users.Add(new Client("client", "client"));
+        
+        // Datele hardcodate de start
+        if (!_users.Any(u => u.Username == "admin")) 
+            _users.Add(new Admin("admin", "admin"));
+            
+        if (!_users.Any(u => u.Username == "client"))
+            _users.Add(new Client("client", "client"));
     }
     //==================================================================================================================
     //PS: DOAR ADMINUL ARE VOIE SA MODIFICE URMATOARELE!!!!
@@ -79,6 +84,49 @@ public class Manager
     }
     //__________________________________________________________________________________________________________________
     // II. Gestionare rezervari
+    public void CreateReservation(Admin admin, string username, int roomNumber, DateTime start, DateTime end)
+    {
+        // 1. Verificăm dacă există camera
+        var room = _rooms.FirstOrDefault(r => r.Number == roomNumber);
+        if (room == null)
+        {
+            throw new KeyNotFoundException($"Camera {roomNumber} nu există.");
+        }
+
+        // 2. Verificăm dacă e liberă
+        if (!IsRoomAvailable(roomNumber, start, end))
+        {
+            _logger?.LogWarning("Adminul {Admin} a incercat sa rezerve camera {Room} care e ocupata.", admin.Username, roomNumber);
+            throw new InvalidOperationException($"Camera {roomNumber} nu este disponibilă în perioada selectată.");
+        }
+
+        // 3. Creăm rezervarea direct cu status ACTIVE
+        var newRes = new Reservation(
+            Guid.NewGuid(),
+            username,
+            roomNumber,
+            start,
+            end,
+            ReservationStatus.Active
+        );
+
+        _reservations.Add(newRes);
+        
+        // (Opțional) Dacă rezervarea începe AZI, marcăm camera ca Ocupată
+        if (start.Date <= DateTime.Now.Date && end.Date > DateTime.Now.Date)
+        {
+            SetRoomStatus(admin, roomNumber, RoomStatus.Occupied);
+        }
+
+        _logger?.LogInformation("Adminul {Admin} a creat manual o rezervare: {Id}", admin.Username, newRes.ReservationID);
+    }
+    
+
+    // Metodă ajutătoare ca să salvăm TOATE rezervările în fișier (Active + Istoric + Anulate)
+    public List<Reservation> GetAllReservations(Admin admin)
+    {
+        return _reservations; // Returnăm lista completă pentru scriere pe disc
+    }
     // A. Vizualizare rezervari active si istorice
     public IEnumerable<Reservation> GetActiveReservations(Admin admin) 
         => _reservations.Where(r => r.Status == ReservationStatus.Active).ToList();

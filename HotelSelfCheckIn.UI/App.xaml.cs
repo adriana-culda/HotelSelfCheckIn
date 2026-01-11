@@ -111,7 +111,7 @@ public partial class App : Application
     {
         if (user is Admin adminLogat)
         {
-            var shellVm = new AdminShellViewModel(_manager, adminLogat);
+            var shellVm = new AdminShellViewModel(_manager, adminLogat,_fileService);
             _mainWindow.Content = new AdminShellView { DataContext = shellVm };
         }
         else if (user is Client clientLogat)

@@ -7,6 +7,7 @@ public class AdminShellViewModel : ViewModelBase
 {
     private readonly Manager _manager;
     private readonly Admin _currentAdmin;
+    private readonly FileService _fileService;
 
     private ViewModelBase _currentView;
     public ViewModelBase CurrentView
@@ -22,10 +23,11 @@ public class AdminShellViewModel : ViewModelBase
     public string AdminName => _currentAdmin.Username;
     public string CurrentDateTime => System.DateTime.Now.ToString("dd MMM yyyy HH:mm");
 
-    public AdminShellViewModel(Manager manager, Admin admin)
+    public AdminShellViewModel(Manager manager, Admin admin,FileService fileService)
     {
         _manager = manager;
         _currentAdmin = admin;
+        _fileService = fileService;
 
         // Pornim implicit cu Dashboard-ul (AdminViewModel-ul vechi)
         CurrentView = new AdminViewModel(_manager, _currentAdmin);
@@ -52,8 +54,8 @@ public class AdminShellViewModel : ViewModelBase
                 break;
                 
             case "Reservation":
-                // MODIFICARE: Acum pasăm și _currentAdmin!
-                CurrentView = new ReservationManagementViewModel(_manager, _currentAdmin);
+                // Aici trimitem manager, admin ȘI fileService
+                CurrentView = new ReservationManagementViewModel(_manager, _currentAdmin, _fileService);
                 break;
                 
             case "Setting":
