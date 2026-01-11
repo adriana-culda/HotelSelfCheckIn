@@ -66,12 +66,36 @@ public class FileService
     // Metoda generică de salvare
     private void Save<T>(string fileName, List<T> data)
     {
-        // Combinăm Folderul cu Numele fișierului
-        string path = Path.Combine(FolderName, fileName);
-        
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(data, options);
-        
-        File.WriteAllText(path, json);
+
+        // 1. SALVARE STANDARD (în bin/Debug/...)
+        // Asta face ca aplicația să funcționeze pe moment
+        string pathBin = Path.Combine(FolderName, fileName);
+        File.WriteAllText(pathBin, json);
+
+        // 2. SALVARE ÎN PROIECT (SYNC CU RIDER)
+        // Acest bloc de cod rulează doar cât timp programăm (Debug mode)
+#if DEBUG
+        try 
+        {
+            // Calea de bază e: .../bin/Debug/net9.0-windows/
+            // Trebuie să urcăm 3 nivele (../) ca să ajungem la folderul proiectului
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            
+            // Urcăm 3 nivele: net9.0 -> Debug -> bin -> Proiect
+            string projectPath = Directory.GetParent(baseDir).Parent.Parent.FullName;
+            
+            // Construim calea către folderul SavedData din sursă
+            string sourcePath = Path.Combine(projectPath, FolderName, fileName);
+
+            // Scriem fișierul și aici!
+            File.WriteAllText(sourcePath, json);
+        }
+        catch 
+        {
+            // Dacă nu reușește să găsească calea, nu crăpăm aplicația, doar ignorăm
+        }
+#endif
     }
 }

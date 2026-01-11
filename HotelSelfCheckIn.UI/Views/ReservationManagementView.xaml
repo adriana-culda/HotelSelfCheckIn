@@ -30,6 +30,7 @@
             </Border.Effect>
 
             <DataGrid ItemsSource="{Binding Reservations}" 
+                      SelectedItem="{Binding SelectedReservation}"
                       AutoGenerateColumns="False" 
                       CanUserAddRows="False" 
                       GridLinesVisibility="None" 
@@ -66,12 +67,15 @@
         </Border>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,20">
-            <Button Content="Edit Reservation" Width="150" Height="35" Margin="5" Background="#90E0EF" BorderThickness="0" FontWeight="Bold"/>
-            <Button Content="Cancel Reservation" Width="150" Height="35" Margin="5" Background="#90E0EF" BorderThickness="0" FontWeight="Bold"/>
             
-            <Button Content="Add Reservation" 
-                    Command="{Binding AddReservationCommand}"
-                    Width="150" Height="35" Margin="5" Background="#00B4D8" Foreground="White" BorderThickness="0" FontWeight="Bold"/>
+            <Button Content="Edit Reservation" 
+                    Command="{Binding EditReservationCommand}"
+                    Width="150" Height="35" Margin="5" Background="#90E0EF" BorderThickness="0" FontWeight="Bold"/>
+            
+            <Button Content="Cancel Reservation" 
+                    Command="{Binding CancelSelectedCommand}"
+                    Width="150" Height="35" Margin="5" Background="#90E0EF" BorderThickness="0" FontWeight="Bold"/>
+            
         </StackPanel>
     </Grid>
 </UserControl>

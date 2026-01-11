@@ -15,23 +15,31 @@ public class ReservationManagementViewModel : ViewModelBase
     private readonly Admin _currentAdmin;
     private readonly FileService _fileService;
 
+    // --- LISTA ---
     private ObservableCollection<Reservation> _reservations;
     public ObservableCollection<Reservation> Reservations
     {
         get => _reservations;
-        set
-        {
-            _reservations = value;
-            OnPropertyChanged();
-        }
+        set { _reservations = value; OnPropertyChanged(); }
     }
 
-    // Comenzi
-    public ICommand AddReservationCommand { get; }
-    public ICommand ShowActiveCommand { get; }  // Pt RadioButton Active
-    public ICommand ShowHistoryCommand { get; } // Pt RadioButton History
-    public ICommand CancelReservationCommand { get; } // Pt butonul X
-    public ICommand CompleteReservationCommand { get; } // Pt butonul ✅
+    // --- SELECȚIA ---
+    private Reservation _selectedReservation;
+    public Reservation SelectedReservation
+    {
+        get => _selectedReservation;
+        set { _selectedReservation = value; OnPropertyChanged(); }
+    }
+
+    // --- COMENZI (Le păstrăm pe toate) ---
+    public ICommand AddReservationCommand { get; }  // O păstrăm în cod!
+    public ICommand EditReservationCommand { get; }
+    public ICommand CancelSelectedCommand { get; } 
+    
+    public ICommand ShowActiveCommand { get; }
+    public ICommand ShowHistoryCommand { get; }
+    public ICommand CancelReservationCommand { get; } 
+    public ICommand CompleteReservationCommand { get; } 
 
     public ReservationManagementViewModel(Manager manager, Admin currentAdmin, FileService fileService)
     {
@@ -39,40 +47,24 @@ public class ReservationManagementViewModel : ViewModelBase
         _currentAdmin = currentAdmin;
         _fileService = fileService;
 
-        // Inițializăm Comenzile
+        // Inițializăm tot
         AddReservationCommand = new RelayCommand(ExecuteAddReservation);
+        EditReservationCommand = new RelayCommand(ExecuteEditReservation);
+        CancelSelectedCommand = new RelayCommand(ExecuteCancelSelected);
+
         ShowActiveCommand = new RelayCommand(_ => LoadReservations(true));
         ShowHistoryCommand = new RelayCommand(_ => LoadReservations(false));
         
-        CancelReservationCommand = new RelayCommand(ExecuteCancel);
-        CompleteReservationCommand = new RelayCommand(ExecuteComplete);
+        CancelReservationCommand = new RelayCommand(ExecuteCancelInline);
+        CompleteReservationCommand = new RelayCommand(ExecuteCompleteInline);
 
-        // Încărcăm default cele active
         LoadReservations(true);
     }
 
-    // --- LOGICA DE FILTRARE ---
-    private void LoadReservations(bool activeOnly)
-    {
-        IEnumerable<Reservation> list;
-        if (activeOnly)
-        {
-            list = _manager.GetActiveReservations(_currentAdmin);
-        }
-        else
-        {
-            // Combinăm Completed + Cancelled pentru istoric
-            var history = _manager.GetHistoryReservations(_currentAdmin); // Completed
-            // Dacă ai o metodă pt Cancelled în Manager, o adaugi aici. Momentan luăm Completed.
-            list = history;
-        }
-        Reservations = new ObservableCollection<Reservation>(list);
-    }
-
-    // --- LOGICA ADAUGARE ---
+    // --- LOGICA ADAUGARE (O păstrăm pentru viitor/client) ---
     private void ExecuteAddReservation(object parameter)
     {
-        var window = new AddReservationWindow();
+        var window = new AddReservationWindow(); // Asigură-te că ai fișierul AddReservationWindow
         if (window.ShowDialog() == true)
         {
             try
@@ -88,33 +80,81 @@ public class ReservationManagementViewModel : ViewModelBase
         }
     }
 
-    // --- LOGICA ANULARE (Butonul X) ---
-    private void ExecuteCancel(object parameter)
+    // --- LOGICA EDITARE ---
+    private void ExecuteEditReservation(object parameter)
     {
-        if (parameter is Guid resId) // Primim ID-ul din XAML
+        if (SelectedReservation == null)
         {
-            if (MessageBox.Show("Sigur anulezi rezervarea?", "Confirmare", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            MessageBox.Show("Selectează o rezervare din tabel mai întâi!", "Atenție");
+            return;
+        }
+
+        var window = new EditReservationWindow(SelectedReservation);
+        if (window.ShowDialog() == true)
+        {
+            try
             {
-                _manager.ForceChangeStatus(_currentAdmin, resId, ReservationStatus.Cancelled);
+                _manager.AdminUpdateReservation(
+                    _currentAdmin, 
+                    SelectedReservation.ReservationID, 
+                    window.NewRoomNumber, 
+                    window.NewStartDate, 
+                    window.NewEndDate
+                );
                 SaveAndRefresh();
+                MessageBox.Show("Rezervare modificată!", "Succes");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Eroare: {ex.Message}", "Eroare");
             }
         }
     }
 
-    // --- LOGICA COMPLETARE (Butonul ✅) ---
-    private void ExecuteComplete(object parameter)
+    // --- LOGICA ANULARE ---
+    private void ExecuteCancelSelected(object parameter)
+    {
+        if (SelectedReservation == null)
+        {
+            MessageBox.Show("Selectează o rezervare din tabel!", "Atenție");
+            return;
+        }
+        ProcessCancel(SelectedReservation.ReservationID);
+    }
+
+    private void ExecuteCancelInline(object parameter)
+    {
+        if (parameter is Guid resId) ProcessCancel(resId);
+    }
+
+    private void ExecuteCompleteInline(object parameter)
     {
         if (parameter is Guid resId)
         {
-            _manager.ForceChangeStatus(_currentAdmin, resId, ReservationStatus.Completed);
+            _manager.ForceChangeStatus(_currentAdmin, id: resId, ReservationStatus.Completed);
             SaveAndRefresh();
         }
     }
 
+    private void ProcessCancel(Guid id)
+    {
+        if (MessageBox.Show("Sigur anulezi rezervarea?", "Confirmare", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+        {
+            _manager.ForceChangeStatus(_currentAdmin, id, ReservationStatus.Cancelled);
+            SaveAndRefresh();
+        }
+    }
+    
     private void SaveAndRefresh()
     {
         var all = _manager.GetAllReservations(_currentAdmin);
         _fileService.SaveReservations(all);
-        LoadReservations(true); // Reîncărcăm lista activă
+        LoadReservations(true); 
+    }
+    
+    private void LoadReservations(bool activeOnly)
+    {
+        if (activeOnly) Reservations = new ObservableCollection<Reservation>(_manager.GetActiveReservations(_currentAdmin));
+        else Reservations = new ObservableCollection<Reservation>(_manager.GetHistoryReservations(_currentAdmin));
     }
 }

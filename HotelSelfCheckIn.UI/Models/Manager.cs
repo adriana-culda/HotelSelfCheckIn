@@ -183,6 +183,45 @@ public class Manager
             _logger.LogInformation("Status schimbat manual de admin: {User}", admin.Username);
         }
     }
+    
+    public void AdminUpdateReservation(Admin admin, Guid reservationId, int newRoomNumber, DateTime newStart, DateTime newEnd)
+    {
+        // 1. Căutăm rezervarea veche
+        var oldRes = _reservations.FirstOrDefault(r => r.ReservationID == reservationId);
+        if (oldRes == null) 
+            throw new KeyNotFoundException("Rezervarea nu există.");
+
+        // 2. Verificăm dacă noua cameră e liberă 
+        // (ATENȚIE: Trebuie să excludem rezervarea curentă din verificare, altfel se ciocnește cu ea însăși!)
+        bool isAvailable = !_reservations.Any(other => 
+            other.ReservationID != reservationId && // Ignorăm rezervarea pe care o modificăm
+            other.RoomNumber == newRoomNumber &&
+            other.Status == ReservationStatus.Active &&
+            newStart < other.EndDate &&
+            newEnd > other.StartDate);
+
+        if (!isAvailable)
+        {
+            _logger?.LogWarning("Adminul {Admin} a incercat sa mute rezervarea pe o perioada ocupata.", admin.Username);
+            throw new InvalidOperationException($"Camera {newRoomNumber} nu este disponibilă în noua perioadă.");
+        }
+
+        // 3. Creăm noua versiune a rezervării (păstrăm ID-ul și Userul, schimbăm restul)
+        // Folosim 'with' pentru că Reservation este imutabil (record)
+        var newRes = oldRes with 
+        { 
+            RoomNumber = newRoomNumber, 
+            StartDate = newStart, 
+            EndDate = newEnd 
+        };
+
+        // 4. Înlocuim în listă
+        int index = _reservations.IndexOf(oldRes);
+        _reservations[index] = newRes;
+
+        _logger?.LogInformation("Adminul {Admin} a modificat rezervarea {Id}. Camera nouă: {Room}", admin.Username, reservationId, newRoomNumber);
+    }
+    
     //__________________________________________________________________________________________________________________
     // III. Configurare reguli de check in/out, se pot modifica din HotelSettings!!!!
     public void UpdateCheckInRules(Admin admin,TimeSpan checkInStart, TimeSpan checkOutEnd)
