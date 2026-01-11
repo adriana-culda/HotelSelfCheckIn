@@ -1,10 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using System.Windows;       // Pentru MessageBox
-using System.Windows.Input; // Pentru ICommand
+using System.Windows;
+using System.Windows.Input;
 using HotelSelfCheckIn.UI.Models;
-using HotelSelfCheckIn.UI.Views; // Aici este AddReservationWindow
+using HotelSelfCheckIn.UI.Views;
 using System.Linq;
 
 namespace HotelSelfCheckIn.UI.ViewModels;
@@ -13,9 +13,8 @@ public class ReservationManagementViewModel : ViewModelBase
 {
     private readonly Manager _manager;
     private readonly Admin _currentAdmin;
-    private readonly FileService _fileService; // <--- Avem nevoie de el pentru salvare
+    private readonly FileService _fileService;
 
-    // Folosim o proprietate cu 'backing field' și OnPropertyChanged ca să se actualizeze UI-ul corect
     private ObservableCollection<Reservation> _reservations;
     public ObservableCollection<Reservation> Reservations
     {
@@ -26,67 +25,96 @@ public class ReservationManagementViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    
-    // Comanda legată de butonul din XAML
-    public ICommand AddReservationCommand { get; }
 
-    // Constructorul cere acum și FileService
+    // Comenzi
+    public ICommand AddReservationCommand { get; }
+    public ICommand ShowActiveCommand { get; }  // Pt RadioButton Active
+    public ICommand ShowHistoryCommand { get; } // Pt RadioButton History
+    public ICommand CancelReservationCommand { get; } // Pt butonul X
+    public ICommand CompleteReservationCommand { get; } // Pt butonul ✅
+
     public ReservationManagementViewModel(Manager manager, Admin currentAdmin, FileService fileService)
     {
         _manager = manager;
         _currentAdmin = currentAdmin;
         _fileService = fileService;
 
-        // Încărcăm lista inițială
-        RefreshList();
-        
-        // Configurăm butonul să apeleze funcția ExecuteAddReservation
+        // Inițializăm Comenzile
         AddReservationCommand = new RelayCommand(ExecuteAddReservation);
+        ShowActiveCommand = new RelayCommand(_ => LoadReservations(true));
+        ShowHistoryCommand = new RelayCommand(_ => LoadReservations(false));
+        
+        CancelReservationCommand = new RelayCommand(ExecuteCancel);
+        CompleteReservationCommand = new RelayCommand(ExecuteComplete);
+
+        // Încărcăm default cele active
+        LoadReservations(true);
     }
 
+    // --- LOGICA DE FILTRARE ---
+    private void LoadReservations(bool activeOnly)
+    {
+        IEnumerable<Reservation> list;
+        if (activeOnly)
+        {
+            list = _manager.GetActiveReservations(_currentAdmin);
+        }
+        else
+        {
+            // Combinăm Completed + Cancelled pentru istoric
+            var history = _manager.GetHistoryReservations(_currentAdmin); // Completed
+            // Dacă ai o metodă pt Cancelled în Manager, o adaugi aici. Momentan luăm Completed.
+            list = history;
+        }
+        Reservations = new ObservableCollection<Reservation>(list);
+    }
+
+    // --- LOGICA ADAUGARE ---
     private void ExecuteAddReservation(object parameter)
     {
-        // 1. Deschidem fereastra de adăugare (Pop-up)
         var window = new AddReservationWindow();
-        
-        // 2. Așteptăm să vedem dacă userul a dat "Save" (DialogResult == true)
         if (window.ShowDialog() == true)
         {
             try
             {
-                // 3. Încercăm să creăm rezervarea în Manager (folosind datele din fereastră)
-                _manager.CreateReservation(
-                    _currentAdmin, 
-                    window.Username, 
-                    window.RoomNumber, 
-                    window.StartDate, 
-                    window.EndDate
-                );
-
-                // 4. Dacă a mers și nu a dat eroare (ex: cameră ocupată), SALVĂM PE DISC
-                // Luăm TOATE rezervările din manager și le scriem în JSON
-                var listaCompleta = _manager.GetAllReservations(_currentAdmin);
-                _fileService.SaveReservations(listaCompleta);
-
-                // 5. Reîmprospătăm tabelul din interfață
-                RefreshList();
-                
-                MessageBox.Show("Rezervare creată cu succes!", "Succes");
+                _manager.CreateReservation(_currentAdmin, window.Username, window.RoomNumber, window.StartDate, window.EndDate);
+                SaveAndRefresh();
+                MessageBox.Show("Rezervare creată!", "Succes");
             }
             catch (Exception ex)
             {
-                // Dacă Managerul zice că e ocupată camera, afișăm eroarea aici
-                MessageBox.Show($"Nu s-a putut crea rezervarea: {ex.Message}", "Eroare");
+                MessageBox.Show($"Eroare: {ex.Message}", "Eroare");
             }
         }
     }
 
-    private void RefreshList()
+    // --- LOGICA ANULARE (Butonul X) ---
+    private void ExecuteCancel(object parameter)
     {
-        // Luăm rezervările active pentru a le afișa în tabel (sau poți lua toate)
-        IEnumerable<Reservation> list = _manager.GetActiveReservations(_currentAdmin);
-        
-        // Actualizăm colecția vizibilă
-        Reservations = new ObservableCollection<Reservation>(list);
+        if (parameter is Guid resId) // Primim ID-ul din XAML
+        {
+            if (MessageBox.Show("Sigur anulezi rezervarea?", "Confirmare", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                _manager.ForceChangeStatus(_currentAdmin, resId, ReservationStatus.Cancelled);
+                SaveAndRefresh();
+            }
+        }
+    }
+
+    // --- LOGICA COMPLETARE (Butonul ✅) ---
+    private void ExecuteComplete(object parameter)
+    {
+        if (parameter is Guid resId)
+        {
+            _manager.ForceChangeStatus(_currentAdmin, resId, ReservationStatus.Completed);
+            SaveAndRefresh();
+        }
+    }
+
+    private void SaveAndRefresh()
+    {
+        var all = _manager.GetAllReservations(_currentAdmin);
+        _fileService.SaveReservations(all);
+        LoadReservations(true); // Reîncărcăm lista activă
     }
 }
