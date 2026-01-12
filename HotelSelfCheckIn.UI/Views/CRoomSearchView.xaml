@@ -40,7 +40,6 @@
                 Padding="15"
                 Margin="0,0,0,20">
             
-            
             <UniformGrid Columns="4">
                 
                 <!-->Primul bloc de completare<-->
@@ -51,7 +50,8 @@
                                Margin="0,0,0,5">
                     </TextBlock>
                     
-                    <DatePicker Height="35" 
+                    <DatePicker SelectedDate="{Binding SearchCheckIn, UpdateSourceTrigger=PropertyChanged}"
+                                Height="35" 
                                 VerticalContentAlignment="Center">
                     </DatePicker>
                 </StackPanel>
@@ -64,7 +64,8 @@
                                Margin="0,0,0,5">
                     </TextBlock>
                     
-                    <DatePicker Height="35" 
+                    <DatePicker SelectedDate="{Binding SearchCheckOut, UpdateSourceTrigger=PropertyChanged}"
+                                Height="35" 
                                 VerticalContentAlignment="Center">
                     </DatePicker>
                 </StackPanel>
@@ -77,12 +78,16 @@
                                Margin="0,0,0,5">
                     </TextBlock>
                     
-                    <ComboBox Height="35" 
+                    <ComboBox SelectedValue="{Binding SelectedRoomType}"
+                              SelectedValuePath="Content"
+                              Height="35" 
                               VerticalContentAlignment="Center">
+                        
                         <ComboBoxItem Content="Single Room"/>
                         <ComboBoxItem Content="Double Room"/>
                         <ComboBoxItem Content="Triple Room"/>
-                        <ComboBoxItem Content="FamilyRoom"/>
+                        <ComboBoxItem Content="Family Room"/>
+                        
                     </ComboBox>
                 </StackPanel>
 
@@ -110,70 +115,71 @@
         <!-->Tabelul cu informatii despre camera<-->
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding AvailableRooms}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="#DDD" 
-                                BorderThickness="0,0,0,1" 
-                                Padding="15"
-                                Margin="0,0,0,15"
-                                Background="White">
-                            
-                            <Grid>
-                                <!-->Impartirea tabelului<-->
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+            <Grid>
+                <TextBlock Text="Nu am găsit camere disponibile pentru perioada selectată." 
+                           Visibility="{Binding HasNoResults, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           HorizontalAlignment="Center" 
+                           Margin="0,50,0,0"
+                           Foreground="Silver" 
+                           FontSize="16"
+                           FontStyle="Italic">
+                </TextBlock>
 
-                                <StackPanel Grid.Column="0">
-                                    <!-->Coloana cu detalii despre camera<-->
-                                    <TextBlock Text="{Binding RoomName}" 
-                                               FontSize="18" 
-                                               FontWeight="Bold">
-                                    </TextBlock>
-                                    
-                                    <TextBlock Text="{Binding Description}" 
-                                               Foreground="Gray" 
-                                               Margin="0,5" 
-                                               TextWrapping="Wrap">
-                                    </TextBlock>
-                                    
-                                    <TextBlock Text="{Binding StatusMessage}" 
-                                               Visibility="{Binding HasNoResults, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                               HorizontalAlignment="Center"
-                                               Foreground="Silver" 
-                                               FontStyle="Italic">
-                                    </TextBlock>
-                                </StackPanel>
+                <ItemsControl ItemsSource="{Binding AvailableRooms}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#DDD" 
+                                    BorderThickness="0,0,0,1" 
+                                    Padding="15" 
+                                    Margin="0,0,0,15" 
+                                    Background="White">
                                 
-                                <!-->Coloana cu pretul si selectatul camerei<-->
-                                <StackPanel Grid.Column="1"
-                                            VerticalAlignment="Center" 
-                                            Margin="20,0,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{Binding RoomName}" 
+                                                   FontSize="18" 
+                                                   FontWeight="Bold">
+                                        </TextBlock>
+                                        
+                                        <TextBlock Text="{Binding Description}" 
+                                                   Foreground="Gray" 
+                                                   Margin="0,5" 
+                                                   TextWrapping="Wrap">
+                                        </TextBlock>
+                                    </StackPanel>
                                     
-                                    <TextBlock Text="{Binding Price, StringFormat='{}{0} €'}" 
-                                               FontSize="20" 
-                                               FontWeight="Bold"
-                                               Foreground="#00B4D8" 
-                                               HorizontalAlignment="Right">
-                                    </TextBlock>
-                                    
-                                    <Button Content="Select Room" 
-                                            Command="{Binding DataContext.SelectRoomCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Margin="0,10,0,0"
-                                            Width="100" 
-                                            Height="35" 
-                                            Background="Black"
-                                            Foreground="White">
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                                    <StackPanel Grid.Column="1" 
+                                                VerticalAlignment="Center" 
+                                                Margin="20,0,0,0">
+                                        
+                                        <TextBlock Text="{Binding Price, StringFormat='{}{0} €'}" 
+                                                   FontSize="20" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="#00B4D8" 
+                                                   HorizontalAlignment="Right">
+                                        </TextBlock>
+                                        
+                                        <Button Content="Select Room" 
+                                                Command="{Binding DataContext.SelectRoomCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Margin="0,10,0,0" 
+                                                Width="100" 
+                                                Height="35" 
+                                                Background="Black" 
+                                                Foreground="White">
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
         </ScrollViewer>
     </Grid>
 </UserControl>

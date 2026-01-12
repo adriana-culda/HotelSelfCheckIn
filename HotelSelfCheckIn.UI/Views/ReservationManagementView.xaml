@@ -31,6 +31,7 @@
             </RadioButton>
             
             <RadioButton Content="History" 
+                         Command="{Binding ShowHistoryCommand}"
                          Foreground="#34495E" 
                          FontWeight="Bold"
                          Cursor="Hand">
@@ -54,6 +55,7 @@
             <!-->Informatii despre rezervare<-->
             <DataGrid ItemsSource="{Binding Reservations}" 
                       SelectedItem="{Binding SelectedReservation}"
+                      IsReadOnly="True"
                       AutoGenerateColumns="False" 
                       CanUserAddRows="False" 
                       GridLinesVisibility="None" 
@@ -62,12 +64,6 @@
                       Margin="10">
                 
                 <DataGrid.Columns>
-                    
-                    <!-->Coloana ID<-->
-                    <DataGridTextColumn Header="ID" 
-                                        Binding="{Binding Id}" 
-                                        Width="50">
-                    </DataGridTextColumn>
                     
                     <!-->Coloana Name<-->
                     <DataGridTextColumn Header="Client Name" 
@@ -83,15 +79,13 @@
                     
                     <!-->Coloana Check-in<-->
                     <DataGridTextColumn Header="Check-In" 
-                                        Binding="{Binding CheckInDate, 
-                                        StringFormat=\{0:dd-MMM-yyyy\}}" 
+                                        Binding="{Binding CheckInDate, StringFormat=\{0:dd-MMM-yyyy\}}" 
                                         Width="*">
                     </DataGridTextColumn>
                     
                     <!-->Coloana Check-out<-->
                     <DataGridTextColumn Header="Check-Out" 
-                                        Binding="{Binding CheckOutDate, 
-                                        StringFormat=\{0:dd-MMM-yyyy\}}" 
+                                        Binding="{Binding CheckOutDate, StringFormat=\{0:dd-MMM-yyyy\}}" 
                                         Width="*">
                     </DataGridTextColumn>
                     
@@ -107,26 +101,15 @@
                         <!-->Optiuni tabel<-->
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" 
-                                            HorizontalAlignment="Center">
-                                    
-                                    <Button Content="✅" 
-                                            ToolTip="Complete" 
-                                            FontSize="14" 
-                                            Margin="3,0" 
-                                            Background="Transparent" 
-                                            BorderThickness="0" 
-                                            Cursor="Hand">
-                                    </Button>
-                                    
-                                    <Button Content="❌" 
-                                            ToolTip="Cancel" 
-                                            FontSize="14"
-                                            Margin="3,0" 
-                                            Background="Transparent" 
-                                            BorderThickness="0" 
-                                            Cursor="Hand">
-                                    </Button>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="✅" ToolTip="Complete" 
+                                            Command="{Binding DataContext.CompleteReservationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Background="Transparent" BorderThickness="0" Cursor="Hand" Margin="5,0"/>
+                                    <Button Content="❌" ToolTip="Cancel" 
+                                            Command="{Binding DataContext.CancelReservationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Background="Transparent" BorderThickness="0" Cursor="Hand" Margin="5,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -145,6 +128,7 @@
             
             <!-->Buton edit<-->
             <Button Content="Edit Reservation"
+                    Command="{Binding EditReservationCommand}"
                     Width="150" 
                     Height="35" 
                     Margin="5" 
@@ -155,6 +139,8 @@
             
             <!-->Buton cancel<-->
             <Button Content="Cancel Reservation" 
+                    Command="{Binding RemoveReservationCommand}"
+                    CommandParameter="{Binding SelectedReservation}"
                     Width="150" 
                     Height="35" 
                     Margin="5"
@@ -165,6 +151,7 @@
             
             <!-->Buton add<-->
             <Button Content="Add Reservation" 
+                    Command="{Binding AddReservationCommand}"
                     Width="150"
                     Height="35" 
                     Margin="5" 

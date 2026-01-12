@@ -31,6 +31,8 @@
             
             <!-->Informatii despre clinet<-->
             <DataGrid ItemsSource="{Binding Clients}" 
+                      SelectedItem="{Binding SelectedClient}"
+                      IsReadOnly="True"
                       AutoGenerateColumns="False" 
                       CanUserAddRows="False" 
                       GridLinesVisibility="None" 
@@ -39,12 +41,6 @@
                       Margin="10">
                 
                 <DataGrid.Columns>
-                    
-                    <!-->Coloana ID<-->
-                    <DataGridTextColumn Header="ID" 
-                                        Binding="{Binding Id}" 
-                                        Width="50">
-                    </DataGridTextColumn>
                     
                     <!-->Coloana Name<-->
                     <DataGridTextColumn Header="Nume Complet" 
@@ -58,7 +54,7 @@
                                         Width="*">
                     </DataGridTextColumn>
                     
-                    <!-->Coloana Telefom.<-->
+                    <!-->Coloana Telefon<-->
                     <DataGridTextColumn Header="Telefon"
                                         Binding="{Binding Phone}" 
                                         Width="*">
@@ -77,6 +73,7 @@
             
             <!-->Buton edit<-->
             <Button Content="Edit Client" 
+                    Command="{Binding EditClientCommand}"
                     Width="150" 
                     Height="35" 
                     Margin="5" 
@@ -87,6 +84,8 @@
             
             <!-->Buton remove<-->
             <Button Content="Remove Client" 
+                    Command="{Binding RemoveClientCommand}"
+                    CommandParameter="{Binding SelectedClient}"
                     Width="150"
                     Height="35" 
                     Margin="5" 
@@ -97,6 +96,7 @@
             
             <!-->Buton add<-->
             <Button Content="Add Client" 
+                    Command="{Binding AddClientCommand}"
                     Width="150" 
                     Height="35" 
                     Margin="5" 

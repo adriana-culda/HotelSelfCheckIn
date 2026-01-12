@@ -44,7 +44,7 @@
                         Tag="Dashboard"
                         Margin="0,5"
                         Height="40"
-                        Background="#3E3E42"
+                        Background="Transparent"
                         Foreground="White"
                         BorderThickness="0"
                         HorizontalAlignment="Stretch"
@@ -53,7 +53,7 @@
                 </Button>
                 
                 <!-->Buton Client<-->
-                <Button Content="Client"
+                <Button Content="Clients"
                         Click="Nav_Click" 
                         Tag="Client"
                         Margin="0,5"
@@ -61,12 +61,13 @@
                         Background="Transparent"
                         Foreground="White"
                         BorderThickness="0"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
                         Padding="20,0,0,0">
                 </Button>
                 
                 <!-->Buton Room<-->
-                <Button Content="Room"
+                <Button Content="Rooms"
                         Click="Nav_Click"
                         Tag="Room"
                         Margin="0,5"
@@ -74,12 +75,13 @@
                         Background="Transparent"
                         Foreground="White"
                         BorderThickness="0"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
                         Padding="20,0,0,0">
                 </Button>
                 
                 <!-->Buton Reservation<-->
-                <Button Content="Reservation"
+                <Button Content="Reservations"
                         Click="Nav_Click"
                         Tag="Reservation"
                         Margin="0,5"
@@ -87,12 +89,13 @@
                         Background="Transparent"
                         Foreground="White"
                         BorderThickness="0"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
                         Padding="20,0,0,0">
                 </Button>
                 
                 <!-->Buton Setting<-->
-                <Button Content="Setting"
+                <Button Content="Settings"
                         Click="Nav_Click" 
                         Tag="Setting"
                         Margin="0,5"
@@ -100,7 +103,8 @@
                         Background="Transparent"
                         Foreground="White"
                         BorderThickness="0"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
                         Padding="20,0,0,0">
                 </Button>
                 
@@ -140,6 +144,7 @@
                         
                         <!-->Buton Log out<-->
                         <Button Content="Log Out" 
+                                Command="{Binding LogoutCommand}"
                                 Foreground="White"
                                 Background="Transparent"
                                 BorderThickness="0" 
@@ -151,7 +156,7 @@
             </Border>
             
             <!-->Legatura<-->
-            <ContentControl x:Name="AdminContentDisplay" Grid.Row="1" />
+            <ContentControl Content="{Binding CurrentView}" Grid.Row="1" />
         </Grid>
         
     </Grid>

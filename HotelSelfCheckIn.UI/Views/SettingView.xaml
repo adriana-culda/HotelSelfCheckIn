@@ -53,7 +53,7 @@
                         </Label>
                         
                         <!-->Scriere Check-in<-->
-                        <TextBox Text="{Binding CheckInTime}" 
+                        <TextBox Text="{Binding CheckInTime, UpdateSourceTrigger=PropertyChanged}" 
                                  Height="32" 
                                  VerticalContentAlignment="Center" 
                                  Padding="5,0">
@@ -68,7 +68,7 @@
                         </Label>
                         
                         <!-->Scriere Check-out<-->
-                        <TextBox Text="{Binding CheckOutTime}" 
+                        <TextBox Text="{Binding CheckOutTime, UpdateSourceTrigger=PropertyChanged}"
                                  Height="32" 
                                  VerticalContentAlignment="Center" 
                                  Padding="5,0">
@@ -95,7 +95,7 @@
                     </Label>
                     
                     <!-->Scriere durata<-->
-                    <TextBox Text="{Binding MinDays}" 
+                    <TextBox Text="{Binding MinDays, UpdateSourceTrigger=PropertyChanged}" 
                              Width="60"
                              Height="32" 
                              Margin="10,0,0,0" 
@@ -113,7 +113,7 @@
                     </Label>
                     
                     <!-->Scriere reguli<-->
-                    <TextBox Text="{Binding GeneralRules}" 
+                    <TextBox Text="{Binding GeneralRules, UpdateSourceTrigger=PropertyChanged}"
                              AcceptsReturn="True" 
                              TextWrapping="Wrap" 
                              VerticalAlignment="Stretch"
@@ -124,6 +124,7 @@
                 <!-->Buton de salvare<-->
                 <Button Grid.Row="5" 
                         Content="Salvează Configurarea" 
+                        Command="{Binding SaveSettingsCommand}"
                         Width="180"
                         Height="38" 
                         Background="#00B4D8" 

@@ -27,66 +27,95 @@
         <!-->Afisare rezervari<-->
         <ScrollViewer Grid.Row="1" 
                       VerticalScrollBarVisibility="Auto">
-            
-            <ItemsControl ItemsSource="{Binding ActiveBookings}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="White"
-                                BorderBrush="#EEE"
-                                BorderThickness="1" 
-                                CornerRadius="8"
-                                Margin="0,0,0,10"
-                                Padding="15">
-                            
-                            <Grid>
-                                
-                                <!-->Detalii despre rezervare<-->
-                                <StackPanel>
-                                    <TextBlock Text="{Binding RoomType}"
-                                               FontWeight="Bold"
-                                               FontSize="16">
-                                    </TextBlock>
-                                    
-                                    <TextBlock Text="{Binding StayInterval}"
-                                               Foreground="Gray">
-                                    </TextBlock>
-                                    
-                                    <TextBlock Text="{Binding BookingId, StringFormat='ID: {0}'}"
-                                               FontSize="11"
-                                               Foreground="Silver">
-                                    </TextBlock>
-                                </StackPanel>
-                                
-                                <!-->Partea de modificare/anulare a camerei<-->
-                                <StackPanel Orientation="Horizontal" 
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center">
-                                    
-                                    <Button Content="Modify"
-                                            Command="{Binding DataContext.ModifyBookingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Margin="0,0,10,0" 
-                                            Width="80" 
-                                            Height="30">
-                                    </Button>
-                                    
-                                    <Button Content="Cancel"
-                                            Command="{Binding DataContext.CancelBookingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Background="#FF4D4D" 
-                                            Foreground="White"
-                                            Width="80" 
-                                            Height="30">
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                            
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+            <Grid>
                 
-            </ItemsControl>
-            
+                <TextBlock Text="You don't have any active reservations at the moment."
+                           Visibility="{Binding HasNoActiveBookings, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Margin="0,50,0,0"
+                           Foreground="Gray"
+                           FontSize="16"
+                           FontStyle="Italic">
+                </TextBlock>
+                
+                <ItemsControl ItemsSource="{Binding ActiveBookings}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White"
+                                    BorderBrush="#EEE"
+                                    BorderThickness="1" 
+                                    CornerRadius="8"
+                                    Margin="0,0,0,10"
+                                    Padding="15">
+                                
+                                <Grid>
+                                    
+                                    <!-->Detalii despre rezervare<-->
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding RoomType}"
+                                                   FontWeight="Bold"
+                                                   FontSize="16">
+                                        </TextBlock>
+                                        
+                                        <TextBlock Text="{Binding StayInterval}"
+                                                   Foreground="Gray">
+                                        </TextBlock>
+                                        
+                                        <TextBlock Text="{Binding BookingId, StringFormat='ID: {0}'}"
+                                                   FontSize="11"
+                                                   Foreground="Silver">
+                                        </TextBlock>
+                                    </StackPanel>
+                                    
+                                    <!-->Partea de modificare/anulare a camerei<-->
+                                    <StackPanel Orientation="Horizontal" 
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center">
+                                        
+                                        <Button Content="Modify"
+                                                Command="{Binding DataContext.ModifyBookingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Background="#00B4D8" 
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                Margin="0,0,10,0" 
+                                                Width="80" 
+                                                Height="30"
+                                                Cursor="Hand">
+                                            
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="5"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                        
+                                        <Button Content="Cancel"
+                                                Command="{Binding DataContext.CancelBookingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Background="#FF4D4D" 
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                Width="80" 
+                                                Height="30"
+                                                Cursor="Hand">
+                                            
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="5"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                                
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    
+                </ItemsControl>
+            </Grid>
         </ScrollViewer>
         
     </Grid></UserControl>

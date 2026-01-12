@@ -25,6 +25,7 @@
         <DataTemplate DataType="{x:Type viewmodels:SettingViewModel}">
             <views:SettingView/>
         </DataTemplate>
-
+        
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Application.Resources>
 </Application>

@@ -6,11 +6,7 @@
              xmlns:local="clr-namespace:HotelSelfCheckIn.UI.Views"
              xmlns:converters="clr-namespace:HotelSelfCheckIn.UI.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="900">
-
-    <UserControl.Resources>
-        <converters:StatusToBrushConverter x:Key="StatusColorConverter"/>
-    </UserControl.Resources>
+             d:DesignHeight="540" d:DesignWidth="780">
     
     <Grid Background="#F5F7FA">
         

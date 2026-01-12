@@ -55,7 +55,7 @@
                     
                     <!-->Buton Check-in<-->
                     <Button Content="CHECK-IN" 
-                            Click="BtnCheckIn_Click"
+                            Command="{Binding CheckInCommand}"
                             Height="45"
                             Margin="5"
                             Background="#00B4D8" 
@@ -66,7 +66,7 @@
                     
                     <!-->Buton Check-out<-->
                     <Button Content="CHECK-OUT"
-                            Click="BtnCheckOut_Click"
+                            Command="{Binding CheckOutCommand}"
                             Height="45"
                             Margin="5"
                             Background="Black" 
