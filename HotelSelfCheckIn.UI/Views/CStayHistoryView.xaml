@@ -5,8 +5,54 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:HotelSelfCheckIn.UI.Views"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+             d:DesignHeight="540" d:DesignWidth="780">
+    
+    <Grid Background="White"
+          Margin="20">
         
-    </Grid>
-</UserControl>
+        <StackPanel>
+            
+            <!-->Textul de sus<-->
+            <TextBlock Text="Stay History"
+                       FontSize="22" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,20">
+            </TextBlock>
+            
+            <!-->Tabel istoric<-->
+            <DataGrid ItemsSource="{Binding PastStays}"
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True" 
+                      Background="Transparent" 
+                      BorderThickness="0">
+                
+                <DataGrid.Columns>
+                    
+                    <!-->Coloana cu data<-->
+                    <DataGridTextColumn Header="Date" 
+                                        Binding="{Binding Date, StringFormat=d}" 
+                                        Width="*">
+                    </DataGridTextColumn>
+                    
+                    <!-->Coloana cu camera<-->
+                    <DataGridTextColumn Header="Room"
+                                        Binding="{Binding RoomName}" 
+                                        Width="*">
+                    </DataGridTextColumn>
+                    
+                    <!-->Coloana cu pretul<-->
+                    <DataGridTextColumn Header="Total Paid" 
+                                        Binding="{Binding TotalPaid, StringFormat='{}{0:C}'}"
+                                        Width="*">
+                    </DataGridTextColumn>
+                    
+                    <!-->Coloana cu statusul<-->
+                    <DataGridTextColumn Header="Status"
+                                        Binding="{Binding Status}"
+                                        Width="*">
+                    </DataGridTextColumn>
+                    
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </Grid></UserControl>
