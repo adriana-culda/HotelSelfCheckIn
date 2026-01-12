@@ -8,28 +8,14 @@
              d:DesignHeight="540" d:DesignWidth="780">
     
     <Grid Background="#F5F7FA">
-        
-        <!-->Impartirea paginii<-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>   
-            <RowDefinition Height="Auto"/> 
-        </Grid.RowDefinitions>
-        
-        <!-->Partea cu tabel<-->
-        <Border Grid.Row="0" 
-                Background="White" 
-                Margin="20" 
-                CornerRadius="10">
-            
+            <RowDefinition Height="*"/>    <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="White" Margin="20" CornerRadius="10">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="15"
-                                  Direction="270" 
-                                  ShadowDepth="2" 
-                                  Opacity="0.1">
-                </DropShadowEffect>
+                <DropShadowEffect BlurRadius="15" Direction="270" ShadowDepth="2" Opacity="0.1"/>
             </Border.Effect>
-            
-            <!-->Informatii despre clinet<-->
+
             <DataGrid ItemsSource="{Binding Clients}" 
                       AutoGenerateColumns="False" 
                       CanUserAddRows="False" 
@@ -37,75 +23,18 @@
                       Background="White" 
                       BorderThickness="0"
                       Margin="10">
-                
                 <DataGrid.Columns>
-                    
-                    <!-->Coloana ID<-->
-                    <DataGridTextColumn Header="ID" 
-                                        Binding="{Binding Id}" 
-                                        Width="50">
-                    </DataGridTextColumn>
-                    
-                    <!-->Coloana Name<-->
-                    <DataGridTextColumn Header="Nume Complet" 
-                                        Binding="{Binding Name}"
-                                        Width="*">
-                    </DataGridTextColumn>
-                    
-                    <!-->Coloana Email<-->
-                    <DataGridTextColumn Header="Email" 
-                                        Binding="{Binding Email}" 
-                                        Width="*">
-                    </DataGridTextColumn>
-                    
-                    <!-->Coloana Telefom.<-->
-                    <DataGridTextColumn Header="Telefon"
-                                        Binding="{Binding Phone}" 
-                                        Width="*">
-                    </DataGridTextColumn>
-                    
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                    <DataGridTextColumn Header="Nume Complet" Binding="{Binding Name}" Width="*"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
+                    <DataGridTextColumn Header="Telefon" Binding="{Binding Phone}" Width="*"/>
                 </DataGrid.Columns>
-                
             </DataGrid>
         </Border>
-    
-        <!-->Butoanele de jos<-->
-        <StackPanel Grid.Row="1" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right"
-                    Margin="0,0,20,20">
-            
-            <!-->Buton edit<-->
-            <Button Content="Edit Client" 
-                    Width="150" 
-                    Height="35" 
-                    Margin="5" 
-                    Background="#90E0EF"
-                    BorderThickness="0" 
-                    FontWeight="Bold">
-            </Button>
-            
-            <!-->Buton remove<-->
-            <Button Content="Remove Client" 
-                    Width="150"
-                    Height="35" 
-                    Margin="5" 
-                    Background="#90E0EF" 
-                    BorderThickness="0" 
-                    FontWeight="Bold">
-            </Button>
-            
-            <!-->Buton add<-->
-            <Button Content="Add Client" 
-                    Width="150" 
-                    Height="35" 
-                    Margin="5" 
-                    Background="#00B4D8"
-                    Foreground="White"
-                    BorderThickness="0" 
-                    FontWeight="Bold">
-            </Button>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,20">
+            <Button Content="Edit Client" Width="150" Height="35" Margin="5" Background="#90E0EF" BorderThickness="0" FontWeight="Bold"/>
+            <Button Content="Remove Client" Width="150" Height="35" Margin="5" Background="#90E0EF" BorderThickness="0" FontWeight="Bold"/>
+            <Button Content="Add Client" Width="150" Height="35" Margin="5" Background="#00B4D8" Foreground="White" BorderThickness="0" FontWeight="Bold"/>
         </StackPanel>
-        
-    </Grid>
-</UserControl>
+    </Grid></UserControl>
