@@ -1,0 +1,82 @@
+[
+  {
+    "$type": "single",
+    "Type": "Single",
+    "PricePerNight": 150,
+    "Number": 101,
+    "Status": 0,
+    "Facilities": []
+  },
+  {
+    "$type": "double",
+    "Type": "Double",
+    "PricePerNight": 250,
+    "Number": 102,
+    "Status": 0,
+    "Facilities": []
+  },
+  {
+    "$type": "single",
+    "Type": "Single",
+    "PricePerNight": 150,
+    "Number": 103,
+    "Status": 1,
+    "Facilities": []
+  },
+  {
+    "$type": "family",
+    "Type": "Family",
+    "PricePerNight": 450,
+    "Number": 104,
+    "Status": 2,
+    "Facilities": []
+  },
+  {
+    "$type": "triple",
+    "Type": "Triple",
+    "PricePerNight": 350,
+    "Number": 105,
+    "Status": 0,
+    "Facilities": []
+  },
+  {
+    "$type": "single",
+    "Type": "Single",
+    "PricePerNight": 150,
+    "Number": 106,
+    "Status": 0,
+    "Facilities": []
+  },
+  {
+    "$type": "double",
+    "Type": "Double",
+    "PricePerNight": 250,
+    "Number": 107,
+    "Status": 3,
+    "Facilities": []
+  },
+  {
+    "$type": "family",
+    "Type": "Family",
+    "PricePerNight": 450,
+    "Number": 108,
+    "Status": 0,
+    "Facilities": []
+  },
+  {
+    "$type": "single",
+    "Type": "Single",
+    "PricePerNight": 150,
+    "Number": 109,
+    "Status": 0,
+    "Facilities": []
+  },
+  {
+    "$type": "double",
+    "Type": "Double",
+    "PricePerNight": 250,
+    "Number": 110,
+    "Status": 0,
+    "Facilities": []
+  }
+]

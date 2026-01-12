@@ -23,6 +23,7 @@
             
             <RadioButton Content="Active Reservations" 
                          IsChecked="True" 
+                         Command="{Binding ShowActiveCommand}" 
                          Margin="0,0,20,0" 
                          Foreground="#34495E" 
                          FontWeight="Bold"
@@ -52,6 +53,7 @@
             
             <!-->Informatii despre rezervare<-->
             <DataGrid ItemsSource="{Binding Reservations}" 
+                      SelectedItem="{Binding SelectedReservation}"
                       AutoGenerateColumns="False" 
                       CanUserAddRows="False" 
                       GridLinesVisibility="None" 

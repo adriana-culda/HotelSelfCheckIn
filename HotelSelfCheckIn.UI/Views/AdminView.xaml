@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:HotelSelfCheckIn.UI.Views"
+             xmlns:converters="clr-namespace:HotelSelfCheckIn.UI.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="540" d:DesignWidth="780">
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <UserControl.Resources>
+        <converters:StatusToBrushConverter x:Key="StatusColorConverter"/>
+    </UserControl.Resources>
     
     <Grid Background="#F5F7FA">
         
