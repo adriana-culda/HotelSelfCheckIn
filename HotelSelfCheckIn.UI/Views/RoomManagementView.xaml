@@ -6,30 +6,19 @@
              xmlns:local="clr-namespace:HotelSelfCheckIn.UI.Views"
              mc:Ignorable="d"
              d:DesignHeight="540" d:DesignWidth="780">
-    
-    <Grid Background="#F5F7FA">
-         
-        <!-->Impartirea paginii<-->
-        <Grid.RowDefinitions>
+   <Grid Background="#F5F7FA"> 
+       <Grid.RowDefinitions>
            <RowDefinition Height="*"/> 
            <RowDefinition Height="Auto"/>
        </Grid.RowDefinitions>
-        
-        <!-->Partea cu tabel<-->
        <Border Grid.Row="0" 
                Background="White" 
                Margin="20" 
                CornerRadius="10">
-           
            <Border.Effect>
-               <DropShadowEffect BlurRadius="15" 
-                                 Direction="270" 
-                                 ShadowDepth="2" 
-                                 Opacity="0.1">
-               </DropShadowEffect>
+               <DropShadowEffect BlurRadius="15" Direction="270" ShadowDepth="2" Opacity="0.1"/>
            </Border.Effect>
-            
-           <!-->Informatii despre camera<-->
+
            <DataGrid ItemsSource="{Binding Rooms}" 
                      AutoGenerateColumns="False" 
                      CanUserAddRows="False" 
@@ -38,101 +27,27 @@
                      BorderThickness="0"
                      Margin="10">
                 <DataGrid.Columns>
-                    
-                    <!-->Coloana Room No.<-->
-                    <DataGridTextColumn Header="Room No." 
-                                        Binding="{Binding RoomNumber}" 
-                                        Width="*">
-                    </DataGridTextColumn>
-                    
-                    <!-->Coloana Room Type<-->
-                    <DataGridTextColumn Header="Room Type" 
-                                        Binding="{Binding Type}" 
-                                        Width="*">
-                    </DataGridTextColumn>
-                    
-                    <!-->Coloana Price<-->
-                    <DataGridTextColumn Header="Price/Night" 
-                                        Binding="{Binding Price,
-                                                 StringFormat='{}{0} RON'}" 
-                                        Width="*">
-                    </DataGridTextColumn>
-                    
-                    <!-->Coloana Status<-->
-                    <DataGridTextColumn Header="Status" 
-                                        Binding="{Binding Status}"
-                                        Width="*">
-                    </DataGridTextColumn>
-                    
-                    <!-->Coloana de modificare status<-->
-                    <DataGridTemplateColumn Header="Quick Actions" 
-                                            Width="150">
-                        <DataGridTemplateColumn.CellTemplate>
-                                    
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    
-                                    <!-->Tipuri de status<-->
-                                    <Button Content="🧹" 
-                                            ToolTip="Set Cleaning" 
-                                            Margin="2" 
-                                            Background="Transparent"
-                                            BorderThickness="0">
-                                    </Button>
-                                    
-                                    <Button Content="🚫"
-                                            ToolTip="Set Out of Service" 
-                                            Margin="2" 
-                                            Background="Transparent" 
-                                            BorderThickness="0">
-                                    </Button>
-                                </StackPanel>
-                            </DataTemplate>
-                                    
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                            
+                            <DataGridTextColumn Header="Room No." Binding="{Binding RoomNumber}" Width="*"/>
+                            <DataGridTextColumn Header="Room Type" Binding="{Binding Type}" Width="*"/>
+                            <DataGridTextColumn Header="Price/Night" Binding="{Binding Price, StringFormat='{}{0} RON'}" Width="*"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*"/>
+                            <DataGridTemplateColumn Header="Quick Actions" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="🧹" ToolTip="Set Cleaning" Margin="2" Background="Transparent" BorderThickness="0"/>
+                                            <Button Content="🚫" ToolTip="Set Out of Service" Margin="2" Background="Transparent" BorderThickness="0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                 </DataGrid.Columns>
            </DataGrid>
        </Border>
-        
-       <!-->Butoanele de jos<-->
-       <StackPanel Grid.Row="1" 
-                   Orientation="Horizontal" 
-                   HorizontalAlignment="Right" 
-                   Margin="0,0,20,20">
-           
-           <!-->Buton edit<-->
-           <Button Content="Edit Room" 
-                   Width="150" 
-                   Height="35"
-                   Margin="5"
-                   Background="#90E0EF" 
-                   BorderThickness="0" 
-                   FontWeight="Bold">
-           </Button>
-           
-           <!-->Buton remove<-->
-           <Button Content="Remove Room"
-                   Width="150" 
-                   Height="35"
-                   Margin="5" 
-                   Background="#90E0EF" 
-                   BorderThickness="0"
-                   FontWeight="Bold">
-           </Button>
-           
-           <!-->Buton add<-->
-           <Button Content="Add Room" 
-                   Width="150" 
-                   Height="35"
-                   Margin="5" 
-                   Background="#00B4D8" 
-                   Foreground="White" 
-                   BorderThickness="0"
-                   FontWeight="Bold">
-           </Button>
-       </StackPanel>
-        
-    </Grid>
+       
+       <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,20">
+                    <Button Content="Edit Room" Width="150" Height="35" Margin="5" Background="#90E0EF" BorderThickness="0" FontWeight="Bold"/>
+                    <Button Content="Remove Room" Width="150" Height="35" Margin="5" Background="#90E0EF" BorderThickness="0" FontWeight="Bold"/>
+                    <Button Content="Add Room" Width="150" Height="35" Margin="5" Background="#00B4D8" Foreground="White" BorderThickness="0" FontWeight="Bold"/>
+       </StackPanel></Grid>
 </UserControl>
