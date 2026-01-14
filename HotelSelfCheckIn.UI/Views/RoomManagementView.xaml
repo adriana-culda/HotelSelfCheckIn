@@ -43,7 +43,7 @@
                     
                     <!-->Coloana Room No.<-->
                     <DataGridTextColumn Header="Room No." 
-                                        Binding="{Binding RoomNumber}" 
+                                        Binding="{Binding Number}" 
                                         Width="*">
                     </DataGridTextColumn>
                     
@@ -55,7 +55,7 @@
                     
                     <!-->Coloana Price<-->
                     <DataGridTextColumn Header="Price/Night" 
-                                        Binding="{Binding Price,
+                                        Binding="{Binding PricePerNight,
                                                  StringFormat='{}{0} RON'}" 
                                         Width="*">
                     </DataGridTextColumn>

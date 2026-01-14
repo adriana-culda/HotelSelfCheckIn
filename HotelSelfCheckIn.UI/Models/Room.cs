@@ -5,8 +5,8 @@ namespace HotelSelfCheckIn.UI.Models;
 //Room nu poate fi creat direct (ii abstract) => trebuie sa dam o eticheta
 [JsonDerivedType(typeof(SingleRoom), typeDiscriminator: "single")]
 [JsonDerivedType(typeof(DoubleRoom), typeDiscriminator: "double")]
-[JsonDerivedType(typeof(TripleRoom), typeDiscriminator: "triple")]
 [JsonDerivedType(typeof(FamilyRoom), typeDiscriminator: "family")]
+[JsonDerivedType(typeof(TripleRoom), typeDiscriminator: "triple")]
 
 //record clasa cu date imutabile, init este un fel de private set.
 public abstract record Room

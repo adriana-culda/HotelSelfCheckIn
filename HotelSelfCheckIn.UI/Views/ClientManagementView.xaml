@@ -64,48 +64,7 @@
                 
             </DataGrid>
         </Border>
-    
-        <!-->Butoanele de jos<-->
-        <StackPanel Grid.Row="1" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right"
-                    Margin="0,0,20,20">
-            
-            <!-->Buton edit<-->
-            <Button Content="Edit Client" 
-                    Command="{Binding EditClientCommand}"
-                    Width="150" 
-                    Height="35" 
-                    Margin="5" 
-                    Background="#90E0EF"
-                    BorderThickness="0" 
-                    FontWeight="Bold">
-            </Button>
-            
-            <!-->Buton remove<-->
-            <Button Content="Remove Client" 
-                    Command="{Binding RemoveClientCommand}"
-                    CommandParameter="{Binding SelectedClient}"
-                    Width="150"
-                    Height="35" 
-                    Margin="5" 
-                    Background="#90E0EF" 
-                    BorderThickness="0" 
-                    FontWeight="Bold">
-            </Button>
-            
-            <!-->Buton add<-->
-            <Button Content="Add Client" 
-                    Command="{Binding AddClientCommand}"
-                    Width="150" 
-                    Height="35" 
-                    Margin="5" 
-                    Background="#00B4D8"
-                    Foreground="White"
-                    BorderThickness="0" 
-                    FontWeight="Bold">
-            </Button>
-        </StackPanel>
+        
         
     </Grid>
 </UserControl>

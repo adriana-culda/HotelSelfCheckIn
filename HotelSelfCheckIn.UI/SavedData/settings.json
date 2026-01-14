@@ -1,0 +1,7 @@
+[
+  {
+    "CheckInStart": "14:00:00",
+    "CheckOutEnd": "12:00:00",
+    "MinReservationDays": 1
+  }
+]

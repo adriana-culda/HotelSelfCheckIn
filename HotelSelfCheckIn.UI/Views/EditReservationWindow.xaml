@@ -12,7 +12,7 @@
                    FontWeight="Bold">
         </TextBlock>
         
-        <TextBox Text="{Binding SelectedReservation.ClientName}" 
+        <TextBox Text="{Binding Username}" 
                  IsReadOnly="True" 
                  Background="#F0F0F0" 
                  Height="30" 
@@ -25,7 +25,7 @@
                    FontWeight="Bold">
         </TextBlock>
         
-        <TextBox Text="{Binding SelectedReservation.RoomNumber, UpdateSourceTrigger=PropertyChanged}" 
+        <TextBox Text="{Binding RoomNumber, UpdateSourceTrigger=PropertyChanged}" 
                  Height="30" 
                  Margin="0,0,0,15"
                  Padding="5">
@@ -40,7 +40,7 @@
                            FontWeight="Bold">
                 </TextBlock>
                 
-                <DatePicker SelectedDate="{Binding SelectedReservation.CheckInDate, UpdateSourceTrigger=PropertyChanged}"/>
+                <DatePicker SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"/>
                 
             </StackPanel>
             
@@ -51,7 +51,7 @@
                            FontWeight="Bold">
                 </TextBlock>
                 
-                <DatePicker SelectedDate="{Binding SelectedReservation.CheckOutDate, UpdateSourceTrigger=PropertyChanged}"/>
+                <DatePicker SelectedDate="{Binding SelectedReservation.EndDate, UpdateSourceTrigger=PropertyChanged}"/>
                 
             </StackPanel>
         </UniformGrid>
@@ -78,7 +78,8 @@
             </Button>
             
             <Button Content="Actualizează" 
-                    Command="{Binding SaveEditReservationCommand}" 
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                     Width="100" Height="30" 
                     Background="#00B4D8" 
                     Foreground="White"

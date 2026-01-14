@@ -11,15 +11,19 @@ public partial class AdminShellView : UserControl
         InitializeComponent();
     }
 
+   
     private void Nav_Click(object sender, RoutedEventArgs e)
     {
-        // 1. Aflăm ce buton s-a apăsat
-        if (sender is Button btn && btn.Tag is string destination)
+       
+        if (sender is Button clickedButton)
         {
-            // 2. Accesăm ViewModel-ul din spate
-            if (DataContext is AdminShellViewModel vm)
+          
+            string destination = clickedButton.Tag?.ToString();
+
+            
+            if (DataContext is AdminShellViewModel vm && !string.IsNullOrEmpty(destination))
             {
-                // 3. Îi spunem să schimbe pagina
+                
                 vm.Navigate(destination);
             }
         }

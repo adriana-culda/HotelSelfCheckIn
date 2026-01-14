@@ -8,6 +8,10 @@ public record Reservation
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
     public ReservationStatus Status { get; init; }
+    
+    public Reservation() 
+    { 
+    }
 
     public Reservation(Guid reservationID, string username, int roomNumber, DateTime startDate, DateTime endDate, ReservationStatus status= ReservationStatus.Active)
     {

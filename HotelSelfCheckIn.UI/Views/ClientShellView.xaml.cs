@@ -13,17 +13,15 @@ public partial class ClientShellView : UserControl
 
     private void Nav_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is Button btn && btn.Tag is string destination)
+        // 1. Identificăm butonul apăsat
+        if (sender is Button btn && btn.Tag is string tag)
         {
-            /* Comentăm până apare fișierul în ViewModels
-               if (DataContext is ClientShellViewModel vm)
-               {
-                   vm.Navigate(destination);
-               }
-            */
-        
-            // Temporar, poți pune un MessageBox ca să vezi că butonul funcționează
-            // MessageBox.Show("Navigăm către: " + destination);
+            // 2. Obținem ViewModel-ul din spatele ferestrei
+            if (this.DataContext is ClientShellViewModel vm)
+            {
+                // 3. Apelăm metoda de navigare
+                vm.Navigate(tag);
+            }
         }
     }
 }

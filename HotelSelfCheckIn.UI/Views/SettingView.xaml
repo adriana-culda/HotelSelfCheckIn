@@ -104,22 +104,7 @@
                     </TextBox>
                 </StackPanel>
                 
-                <!-->Partea de reguli<-->
-                <DockPanel Grid.Row="4" 
-                           Margin="0,5,0,15">
-                    
-                    <Label DockPanel.Dock="Top" 
-                           Content="Reguli generale hotel:">
-                    </Label>
-                    
-                    <!-->Scriere reguli<-->
-                    <TextBox Text="{Binding GeneralRules, UpdateSourceTrigger=PropertyChanged}"
-                             AcceptsReturn="True" 
-                             TextWrapping="Wrap" 
-                             VerticalAlignment="Stretch"
-                             Padding="10"> 
-                    </TextBox>
-                </DockPanel>
+                
                 
                 <!-->Buton de salvare<-->
                 <Button Grid.Row="5" 

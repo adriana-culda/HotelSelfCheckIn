@@ -7,6 +7,9 @@
              xmlns:converters="clr-namespace:HotelSelfCheckIn.UI.Converters"
              mc:Ignorable="d"
              d:DesignHeight="540" d:DesignWidth="780">
+    <UserControl.Resources>
+        <converters:StatusColorConverter x:Key="StatusColorConverter"/>
+    </UserControl.Resources>
     
     <Grid Background="#F5F7FA">
         <Grid.RowDefinitions>
@@ -52,63 +55,7 @@
             </Border>            
         </WrapPanel>
 
-        <Border Grid.Row="1" Background="White" CornerRadius="10" Margin="30,0,30,30" Padding="10">
-            <DataGrid ItemsSource="{Binding Camere}" 
-                      AutoGenerateColumns="False" 
-                      CanUserAddRows="False"
-                      IsReadOnly="True"
-                      HeadersVisibility="Column"
-                      Background="White"
-                      BorderThickness="0"
-                      GridLinesVisibility="Horizontal">
-                
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nr. Cameră" Binding="{Binding Numar}" Width="100" FontWeight="Bold"/>
-                    
-                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="150" FontWeight="Bold">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="{Binding Status, Converter={StaticResource StatusColorConverter}}"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTemplateColumn Header="Acțiuni Admin" Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    
-                                    <Button Content="Check In" 
-                                            Command="{Binding DataContext.CheckInCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
-                                            CommandParameter="{Binding Numar}"
-                                            Background="#4CAF50" Foreground="White"
-                                            Padding="10,5" Margin="0,0,10,0" BorderThickness="0">
-                                        <Button.Resources>
-                                            <Style TargetType="Border">
-                                                <Setter Property="CornerRadius" Value="5"/>
-                                            </Style>
-                                        </Button.Resources>
-                                    </Button>
-
-                                    <Button Content="Check Out" 
-                                            Command="{Binding DataContext.CheckOutCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
-                                            CommandParameter="{Binding Numar}"
-                                            Background="#F44336" Foreground="White"
-                                            Padding="10,5" BorderThickness="0">
-                                        <Button.Resources>
-                                            <Style TargetType="Border">
-                                                <Setter Property="CornerRadius" Value="5"/>
-                                            </Style>
-                                        </Button.Resources>
-                                    </Button>
-
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
+        
 
     </Grid>
 </UserControl>

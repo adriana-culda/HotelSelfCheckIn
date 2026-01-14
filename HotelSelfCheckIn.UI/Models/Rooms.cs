@@ -7,6 +7,7 @@ public record SingleRoom : Room
 
     public SingleRoom(int number, List<string> facilities = null) 
         : base(number, RoomStatus.Free, facilities) {}
+    public SingleRoom() : base(0, RoomStatus.Free) { }
 }
 
 public record DoubleRoom : Room
@@ -16,6 +17,7 @@ public record DoubleRoom : Room
 
     public DoubleRoom(int number, List<string> facilities = null) 
         : base(number, RoomStatus.Free, facilities) {}
+    public DoubleRoom() : base(0, RoomStatus.Free) { }
 }
 public record TripleRoom : Room
 {
@@ -24,6 +26,7 @@ public record TripleRoom : Room
 
     public TripleRoom(int number, List<string> facilities = null) 
         : base(number, RoomStatus.Free, facilities) {}
+    public TripleRoom() : base(0, RoomStatus.Free) { }
 }
 public record FamilyRoom : Room
 {
@@ -32,4 +35,5 @@ public record FamilyRoom : Room
 
     public FamilyRoom(int number, List<string> facilities = null) 
         : base(number, RoomStatus.Free, facilities) {}
+    public FamilyRoom() : base(0, RoomStatus.Free) { }
 }

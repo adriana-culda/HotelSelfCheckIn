@@ -12,7 +12,7 @@
       <None Remove="Assets\download.jfif" />
       <Resource Include="Assets\logo.png" />
       <None Update="SavedData\camere.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </None>
       <None Update="SavedData\rezervari.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

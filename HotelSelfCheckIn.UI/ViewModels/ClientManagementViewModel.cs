@@ -14,6 +14,6 @@ public class ClientManagementViewModel : ViewModelBase
         
         // Mockup pentru exemplu dacă nu ai metoda încă:
         Clients = new ObservableCollection<User>();
-        Clients.Add(new Client("client1", "pass") { Name = "Ion Popescu", Email = "ion@test.com" });
+        Clients.Add(new Client("client1", "pass") { Name = "Ion Popescu", Email = "ion@test.com" ,Phone ="+40719459130"});
     }
 }

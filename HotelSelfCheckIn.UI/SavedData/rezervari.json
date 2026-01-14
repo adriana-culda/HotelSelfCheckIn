@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "ReservationID": "ad3cb96e-745d-48de-a128-36703ee38b08",
+    "Username": "client1",
+    "RoomNumber": 102,
+    "StartDate": "2026-01-13T19:49:44.3962239+02:00",
+    "EndDate": "2026-01-16T19:49:44.3980634+02:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "5fb6feb5-6638-4971-b274-f7033631e521",
+    "Username": "client2",
+    "RoomNumber": 101,
+    "StartDate": "2026-01-04T19:49:44.3987189+02:00",
+    "EndDate": "2026-01-09T19:49:44.3987204+02:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "95b36fd1-8491-42fc-9918-0ad5aa7df058",
+    "Username": "client1",
+    "RoomNumber": 106,
+    "StartDate": "2026-01-19T19:49:44.398721+02:00",
+    "EndDate": "2026-01-21T19:49:44.3987212+02:00",
+    "Status": 1
+  }
+]

@@ -1,15 +1,15 @@
 using System;
-using System.Windows.Controls; // Necesar pentru PasswordBox
+using System.Windows;
+using System.Windows.Controls; 
 using System.Windows.Input;
-using HotelSelfCheckIn.UI.Models; // Aici este clasa ta Manager
+using HotelSelfCheckIn.UI.Models; 
 
 namespace HotelSelfCheckIn.UI.ViewModels;
 
 public class LoginViewModel : ViewModelBase
 {
-    // FIX 1: Folosim clasa ta reală 'Manager', nu 'HotelManager'
     private readonly Manager _manager;
-    private readonly Action<User> _loginSuccessCallback; // Funcția care schimbă pagina spre Admin
+    private readonly Action<User> _loginSuccessCallback; 
     
     private string _username;
     private string _errorMessage;
@@ -21,7 +21,7 @@ public class LoginViewModel : ViewModelBase
         {
             _username = value;
             OnPropertyChanged();
-            ErrorMessage = string.Empty; // Ștergem eroarea când userul scrie iar
+            ErrorMessage = string.Empty; 
         }
     }
 
@@ -37,7 +37,6 @@ public class LoginViewModel : ViewModelBase
 
     public ICommand LoginCommand { get; }
 
-    // Constructorul primește Managerul tău real
     public LoginViewModel(Manager manager, Action<User> onLoginSuccess)
     {
         _manager = manager;
@@ -47,36 +46,30 @@ public class LoginViewModel : ViewModelBase
 
     private void ExecuteLogin(object parameter)
     {
+        // 1. EXTRAGEM PAROLA DIN PARAMETRU (Aici era eroarea ta)
+        // Parameter este controlul PasswordBox trimis din XAML
         var passwordBox = parameter as PasswordBox;
-        var password = passwordBox?.Password;
+        var password = passwordBox?.Password; // Extragem string-ul
 
+        // Validare simplă
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
         {
             ErrorMessage = "Te rog introdu username și parola.";
             return;
         }
 
-        // FIX 2 (NOTA 10): Folosim logica ta reală din Manager!
-        // Nu mai verificăm manual "admin/admin", ci apelăm funcția ta.
+        // 2. Încercăm autentificarea
         var user = _manager.Authenticate(Username, password);
 
-        if (user != null)
-        {
-            // Verificăm ce fel de utilizator este
-            if (user is Admin)
-            {
-                // Este Admin -> Schimbăm pagina spre Tabel
-                _loginSuccessCallback?.Invoke(user);
-            }
-            else if (user is Client)
-            {
-                // Este Client -> Deocamdată doar afișăm un mesaj (sau facem navigare spre ClientView mai târziu)
-                ErrorMessage = "Logare Client reușită! (Interfața Client urmează)";
-            }
-        }
-        else
+        if (user == null)
         {
             ErrorMessage = "Username sau parolă incorectă!";
+            return;
         }
+
+        // 3. SUCCES!
+        // Nu facem "if user is Admin" aici. 
+        // Doar apelăm callback-ul. MainViewModel va decide ce fereastră să deschidă.
+        _loginSuccessCallback?.Invoke(user);
     }
 }

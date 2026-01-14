@@ -29,16 +29,10 @@
                  Padding="5">
         </TextBox>
 
-        <TextBlock Text="Preț pe Noapte:"
-                   Margin="0,0,0,5" 
-                   FontWeight="Bold">
-        </TextBlock>
-        
-        <TextBox Text="{Binding SelectedRoom.Price, UpdateSourceTrigger=PropertyChanged}" 
-                 Height="30" 
-                 Margin="0,0,0,20" 
-                 Padding="5">
-        </TextBox>
+        <TextBlock Text="Status Cameră:" Margin="0,0,0,5" FontWeight="Bold"/>
+        <ComboBox ItemsSource="{Binding StatusList}"
+                  SelectedItem="{Binding SelectedRoom.Status}"
+                  Height="30" Margin="0,0,0,20" Padding="5"/>
 
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Right">

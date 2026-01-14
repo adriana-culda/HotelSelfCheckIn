@@ -67,7 +67,7 @@
                     
                     <!-->Coloana Name<-->
                     <DataGridTextColumn Header="Client Name" 
-                                        Binding="{Binding ClientName}" 
+                                        Binding="{Binding Name}"
                                         Width="*">
                     </DataGridTextColumn>
                     
@@ -79,13 +79,13 @@
                     
                     <!-->Coloana Check-in<-->
                     <DataGridTextColumn Header="Check-In" 
-                                        Binding="{Binding CheckInDate, StringFormat=\{0:dd-MMM-yyyy\}}" 
+                                        Binding="{Binding StartDate, StringFormat=\{0:dd-MMM-yyyy\}}" 
                                         Width="*">
                     </DataGridTextColumn>
                     
                     <!-->Coloana Check-out<-->
                     <DataGridTextColumn Header="Check-Out" 
-                                        Binding="{Binding CheckOutDate, StringFormat=\{0:dd-MMM-yyyy\}}" 
+                                        Binding="{Binding EndDate, StringFormat=\{0:dd-MMM-yyyy\}}" 
                                         Width="*">
                     </DataGridTextColumn>
                     
@@ -149,17 +149,7 @@
                     FontWeight="Bold">
             </Button>
             
-            <!-->Buton add<-->
-            <Button Content="Add Reservation" 
-                    Command="{Binding AddReservationCommand}"
-                    Width="150"
-                    Height="35" 
-                    Margin="5" 
-                    Background="#00B4D8" 
-                    Foreground="White"
-                    BorderThickness="0" 
-                    FontWeight="Bold">
-            </Button>
+            
         </StackPanel>
         
     </Grid>

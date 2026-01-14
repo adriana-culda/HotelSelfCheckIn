@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic; // <--- Asigură-te că ai acest using pentru List<Room>
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using HotelSelfCheckIn.UI.Models;
 using HotelSelfCheckIn.UI.ViewModels;
@@ -8,115 +9,61 @@ namespace HotelSelfCheckIn.UI;
 
 public partial class App : Application
 {
-    private MainWindow _mainWindow;
-    private Manager _manager;
     private FileService _fileService;
+    private Manager _manager;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
+        // 1. Inițializare Backend
         _fileService = new FileService();
-        _manager = new Manager(); // Constructorul Managerului creează deja Admin-ul default
+        _manager = new Manager(_fileService);
 
         try 
         {
-            // 1. Încărcăm ce găsim pe disc
-            var (camere, rezervari) = _fileService.Load(); 
+            // 2. Încărcare Date + Seed Data (Codul tău bun)
+            var (camere, rezervari) = _fileService.Load();
+            bool fisiereExistaC = System.IO.File.Exists("SavedData/camere.json");
+            bool fisiereExistaR = System.IO.File.Exists("SavedData/rezervari.json");
+            var setari = _fileService.LoadSettings();
 
-            // --- SEED CAMERE (Dacă nu există) ---
-            if (camere.Count == 0)
+            if (!fisiereExistaC && camere.Count == 0)
             {
                 camere = new List<Room>
                 {
-                    new SingleRoom(101),
-                    new DoubleRoom(102),
-                    new SingleRoom(103) with { Status = RoomStatus.Occupied }, // Aceasta va avea o rezervare activă!
-                    new FamilyRoom(104) with { Status = RoomStatus.Cleaning },
-                    new TripleRoom(105),
-                    new SingleRoom(106),
-                    new DoubleRoom(107) with { Status = RoomStatus.Unavailable },
-                    new FamilyRoom(108),
-                    new SingleRoom(109),
-                    new DoubleRoom(110)
+                    new SingleRoom(101), new DoubleRoom(102), new SingleRoom(103) with { Status = RoomStatus.Occupied },
+                    new FamilyRoom(104) with { Status = RoomStatus.Cleaning }, new TripleRoom(105), new SingleRoom(106),
+                    new DoubleRoom(107) with { Status = RoomStatus.Unavailable }, new FamilyRoom(108), new SingleRoom(109), new DoubleRoom(110)
                 };
                 _fileService.SaveRooms(camere);
             }
 
-            // --- SEED REZERVĂRI (Dacă nu există) ---
-            if (rezervari.Count == 0)
+            if (!fisiereExistaR && rezervari.Count == 0)
             {
-                // Atenție: Trebuie să folosim numere de cameră care există deja (ex: 103)
-                // și useri care există (ex: "client1" sau "admin")
-                
                 rezervari = new List<Reservation>
                 {
-                    // O rezervare ACTIVĂ pentru camera 103 (care e Occupied mai sus)
-                    new Reservation(
-                        Guid.NewGuid(), 
-                        "client1", 
-                        103, 
-                        DateTime.Now.AddDays(-1), // A început ieri
-                        DateTime.Now.AddDays(2),  // Se termină peste 2 zile
-                        ReservationStatus.Active
-                    ),
-
-                    // O rezervare FINALIZATĂ (Istoric)
-                    new Reservation(
-                        Guid.NewGuid(), 
-                        "client2", 
-                        101, 
-                        DateTime.Now.AddDays(-10), 
-                        DateTime.Now.AddDays(-5), 
-                        ReservationStatus.Completed
-                    ),
-
-                    // O rezervare VIITOARE (Pending)
-                    new Reservation(
-                        Guid.NewGuid(), 
-                        "client1", 
-                        105, 
-                        DateTime.Now.AddDays(5), 
-                        DateTime.Now.AddDays(7), 
-                        ReservationStatus.Pending
-                    )
+                    new Reservation(Guid.NewGuid(), "client1", 103, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(2), ReservationStatus.Active),
+                    new Reservation(Guid.NewGuid(), "client2", 101, DateTime.Now.AddDays(-10), DateTime.Now.AddDays(-5), ReservationStatus.Completed),
+                    new Reservation(Guid.NewGuid(), "client1", 105, DateTime.Now.AddDays(5), DateTime.Now.AddDays(7), ReservationStatus.Pending)
                 };
-
-                // Salvăm pe disc -> se creează "rezervari.json"
                 _fileService.SaveReservations(rezervari);
             }
 
-            // 2. Încărcăm totul în Manager
-            _manager.LoadData(camere, rezervari);
+            _manager.LoadData(camere, rezervari, setari);
         }
         catch (Exception ex)
         { 
-            // E bine să vezi eroarea dacă apare
             MessageBox.Show("Eroare la încărcarea datelor: " + ex.Message);
         }
-        catch 
-        { 
-            // Dacă ceva crapă rău, aplicația continuă dar fără date
-        }
 
-        _mainWindow = new MainWindow();
-
-        var loginVm = new LoginViewModel(_manager, OnUserLoggedIn);
+        // 3. PORNIRE APLICAȚIE (MVVM PUR)
+        // Nu mai facem nicio logică manuală aici. MainViewModel se ocupă de tot.
         
-        _mainWindow.Content = new LoginView { DataContext = loginVm };
-        _mainWindow.Show();
-    }
-
-    private void OnUserLoggedIn(User user)
-    {
-        if (user is Admin adminLogat)
-        {
-            var shellVm = new AdminShellViewModel(_manager, adminLogat,_fileService);
-            _mainWindow.Content = new AdminShellView { DataContext = shellVm };
-        }
-        else if (user is Client clientLogat)
-        {
-            MessageBox.Show($"Bine ai venit, client {clientLogat.Username}!");
-        }
+        var mainWindow = new MainWindow();
+        var mainViewModel = new MainViewModel(_manager,_fileService); // MainViewModel va porni automat cu Login
+        
+        mainWindow.DataContext = mainViewModel; // Legătura magică
+        mainWindow.Show();
     }
 }

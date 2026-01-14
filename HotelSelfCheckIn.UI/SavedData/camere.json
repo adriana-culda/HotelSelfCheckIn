@@ -16,11 +16,11 @@
     "Facilities": []
   },
   {
-    "$type": "single",
-    "Type": "Single",
-    "PricePerNight": 150,
-    "Number": 103,
-    "Status": 1,
+    "$type": "family",
+    "Type": "Family",
+    "PricePerNight": 450,
+    "Number": 203,
+    "Status": 2,
     "Facilities": []
   },
   {
@@ -77,6 +77,14 @@
     "PricePerNight": 250,
     "Number": 110,
     "Status": 0,
+    "Facilities": []
+  },
+  {
+    "$type": "single",
+    "Type": "Single",
+    "PricePerNight": 150,
+    "Number": 200,
+    "Status": 2,
     "Facilities": []
   }
 ]

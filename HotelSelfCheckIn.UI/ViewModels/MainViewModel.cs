@@ -1,29 +1,46 @@
+using HotelSelfCheckIn.UI.Models;
+using HotelSelfCheckIn.UI.ViewModels;
+
 namespace HotelSelfCheckIn.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    // Aici ținem minte pe ce ecran suntem
-    private ViewModelBase _currentViewModel;
+    private readonly Manager _manager;
+    private readonly FileService _fileService; // <--- Îl păstrăm aici
+    private ViewModelBase _currentView;
 
-    public ViewModelBase CurrentViewModel
+    public ViewModelBase CurrentView
     {
-        get => _currentViewModel;
-        set
+        get => _currentView;
+        set { _currentView = value; OnPropertyChanged(); }
+    }
+
+    // Constructorul primește acum și FileService
+    public MainViewModel(Manager manager, FileService fileService)
+    {
+        _manager = manager;
+        _fileService = fileService;
+
+        CurrentView = new LoginViewModel(_manager, OnLoginSuccess);
+    }
+
+    private void OnLoginSuccess(User user)
+    {
+        if (user is Admin adminUser)
         {
-            _currentViewModel = value;
-            OnPropertyChanged();
+            // AICI ESTE CHEIA:
+            // Trimitem 4 parametri: Manager, Admin, FileService (pt codul tau vechi) si Action (pt logout)
+            CurrentView = new AdminShellViewModel(_manager, adminUser, _fileService);
+        }
+        else if (user is Client clientUser)
+        {
+            // La client nu ai nevoie de FileService, deci rămâne simplu
+            CurrentView = new ClientShellViewModel(_manager, clientUser,OnLogout);
         }
     }
 
-    // Constructorul primește primul ecran (Login)
-    public MainViewModel(ViewModelBase initialViewModel)
+    private void OnLogout()
     {
-        CurrentViewModel = initialViewModel;
-    }
-    
-    // Metodă ca să schimbăm ecranul din exterior
-    public void NavigateTo(ViewModelBase newViewModel)
-    {
-        CurrentViewModel = newViewModel;
+        CurrentView = new LoginViewModel(_manager, OnLoginSuccess);
     }
 }
