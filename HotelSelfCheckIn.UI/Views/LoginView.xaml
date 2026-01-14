@@ -5,75 +5,46 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:HotelSelfCheckIn.UI.Views"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="400">
-    
-    <Grid Background="White">
-        
-        <StackPanel VerticalAlignment="Center" 
-                    HorizontalAlignment="Center" 
-                    Width="300">
+             d:DesignHeight="450" d:DesignWidth="400"
+             Background="White">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
             
-            <!-->Logo<-->
             <Image Source="pack://application:,,,/Assets/logo.png"
                    Width="100" 
                    Height="100" 
-                   Margin="0,0,0,20">
-            </Image>
+                   Margin="0,0,0,20"/>
             
-            <!-->Eticheta text<-->
-            <TextBlock Text="Username" 
-                       Foreground="Gray" 
-                       FontSize="12" 
-                       Margin="0,10,0,0">
-            </TextBlock> 
-            
-            <!-->Scriere Username<-->
-            <TextBox Text="{Binding Username}" 
+            <TextBlock Text="Username" Foreground="Gray" FontSize="12" Margin="0,10,0,0"/>
+            <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
                      FontSize="16" 
                      BorderThickness="0,0,0,1" 
                      BorderBrush="LightGray" 
-                     Margin="0,0,0,15">
-            </TextBox> <!--> {Binding Username} ia textul si il trimite <-->
+                     Margin="0,0,0,15"/>
             
-            <!-->Eticheta text<-->
-            <TextBlock Text="Password" 
-                       Foreground="Gray" 
-                       FontSize="12" 
-                       Margin="0,10,0,0">
-            </TextBlock>
+            <TextBlock Text="Password" Foreground="Gray" FontSize="12" Margin="0,10,0,0"/>
             
-            <!-->Scriere Password<-->
-            <PasswordBox FontSize="16"
-                         BorderThickness="0,0,0,1"
+            <PasswordBox x:Name="txtPassword"
+                         FontSize="16" 
+                         BorderThickness="0,0,0,1" 
                          BorderBrush="LightGray" 
-                         Margin="0,0,0,25">
-            </PasswordBox>
-            
-            <!-->Buton Log in<-->
+                         Margin="0,0,0,25"/>
+
             <Button Content="LOG IN" 
                     Background="Black" 
-                    Foreground="White"
+                    Foreground="White" 
                     Height="40" 
                     FontWeight="Bold" 
-                    Command="{Binding LoginCommand}">
-                
+                    Command="{Binding LoginCommand}"
+                    CommandParameter="{Binding ElementName=txtPassword}">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" 
-                                Value="8">
-                        </Setter>
+                        <Setter Property="CornerRadius" Value="8"/>
                     </Style>
                 </Button.Resources>
-                
             </Button>
             
-            <!-->Partea de erori<-->
-            <TextBlock Text="{Binding ErrorMessage}" 
-                       Foreground="Red" 
-                       HorizontalAlignment="Center" 
-                       Margin="0,10,0,0">
-            </TextBlock>
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" HorizontalAlignment="Center" Margin="0,10,0,0"/>
         </StackPanel>
-        
     </Grid>
 </UserControl>
