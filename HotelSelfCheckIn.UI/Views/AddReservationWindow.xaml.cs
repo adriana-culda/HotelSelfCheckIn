@@ -1,59 +1,21 @@
-using System;
 using System.Windows;
 
-namespace HotelSelfCheckIn.UI.Views; // Namespace-ul trebuie să fie corect
-
-public partial class AddReservationWindow : Window
+namespace HotelSelfCheckIn.UI.Views
 {
-    // Proprietăți publice pe care le citim în ViewModel
-    public string Username { get; private set; }
-    public int RoomNumber { get; private set; }
-    public DateTime StartDate { get; private set; }
-    public DateTime EndDate { get; private set; }
-
-    public AddReservationWindow()
+    public partial class AddReservationWindow : Window
     {
-        InitializeComponent();
-        
-        // Setăm valori implicite (azi și mâine)
-        dpStart.SelectedDate = DateTime.Now;
-        dpEnd.SelectedDate = DateTime.Now.AddDays(1);
-    }
-
-    private void Save_Click(object sender, RoutedEventArgs e)
-    {
-        // 1. Validare simplă
-        if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtRoomNumber.Text))
+        public AddReservationWindow()
         {
-            MessageBox.Show("Completează toate câmpurile!", "Eroare");
-            return;
+            InitializeComponent();
+            // WindowStartupLocation-ul stabilit în XAML (CenterScreen) 
+            // se va ocupa de poziționare.
         }
 
-        if (!int.TryParse(txtRoomNumber.Text, out int room))
+        // Metodă pentru a închide fereastra din cod dacă este nevoie
+        private void CloseWindow()
         {
-            MessageBox.Show("Numărul camerei trebuie să fie un număr valid!", "Eroare");
-            return;
+            this.DialogResult = true;
+            this.Close();
         }
-
-        if (dpStart.SelectedDate == null || dpEnd.SelectedDate == null)
-        {
-            MessageBox.Show("Selectează datele de început și sfârșit!", "Eroare");
-            return;
-        }
-
-        if (dpStart.SelectedDate >= dpEnd.SelectedDate)
-        {
-            MessageBox.Show("Data de Check-Out trebuie să fie după Check-In!", "Eroare");
-            return;
-        }
-
-        // 2. Salvăm datele în proprietăți publice
-        Username = txtUsername.Text;
-        RoomNumber = room;
-        StartDate = dpStart.SelectedDate.Value;
-        EndDate = dpEnd.SelectedDate.Value;
-
-        // 3. Închidem fereastra cu succes (return true)
-        DialogResult = true;
     }
 }

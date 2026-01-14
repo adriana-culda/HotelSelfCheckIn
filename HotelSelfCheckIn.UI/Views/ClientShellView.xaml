@@ -1,4 +1,4 @@
-<UserControl x:Class="HotelSelfCheckIn.UI.Views.AdminShellView"
+<UserControl x:Class="HotelSelfCheckIn.UI.Views.ClientShellView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -29,7 +29,7 @@
                 </Image>
                 
                 <!-->Text mare sus<-->
-                <TextBlock Text="Hotel Management System" 
+                <TextBlock Text="Guest Self-Service" 
                            Foreground="White"
                            FontSize="14"
                            FontWeight="Bold"
@@ -39,9 +39,9 @@
                 </TextBlock>
                 
                 <!-->Buton Dashboard<-->
-                <Button Content="Dashboard"
+                <Button Content="Search Rooms"
                         Click="Nav_Click" 
-                        Tag="Dashboard"
+                        Tag="Search"
                         Margin="0,5"
                         Height="40"
                         Background="Transparent"
@@ -53,9 +53,9 @@
                 </Button>
                 
                 <!-->Buton Client<-->
-                <Button Content="Clients"
+                <Button Content="Book a Room"
                         Click="Nav_Click" 
-                        Tag="Client"
+                        Tag="Book"
                         Margin="0,5"
                         Height="40"
                         Background="Transparent"
@@ -67,9 +67,9 @@
                 </Button>
                 
                 <!-->Buton Room<-->
-                <Button Content="Rooms"
+                <Button Content="Check-In / Out"
                         Click="Nav_Click"
-                        Tag="Room"
+                        Tag="CheckInOut"
                         Margin="0,5"
                         Height="40"
                         Background="Transparent"
@@ -81,9 +81,9 @@
                 </Button>
                 
                 <!-->Buton Reservation<-->
-                <Button Content="Reservations"
+                <Button Content="My Reservations"
                         Click="Nav_Click"
-                        Tag="Reservation"
+                        Tag="Manage"
                         Margin="0,5"
                         Height="40"
                         Background="Transparent"
@@ -95,9 +95,9 @@
                 </Button>
                 
                 <!-->Buton Setting<-->
-                <Button Content="Settings"
+                <Button Content="Stay History"
                         Click="Nav_Click" 
-                        Tag="Setting"
+                        Tag="History"
                         Margin="0,5"
                         Height="40"
                         Background="Transparent"
@@ -135,7 +135,7 @@
                                 VerticalAlignment="Center">
                         
                         <!-->Afisare nume admin<-->
-                        <TextBlock Text="{Binding AdminName, StringFormat='Welcome: {0}'}" 
+                        <TextBlock Text="{Binding GuestName, StringFormat='Welcome: {0}'}"
                                    Foreground="White"
                                    Margin="0,0,20,0" 
                                    VerticalAlignment="Center" 
@@ -156,7 +156,7 @@
             </Border>
             
             <!-->Legatura<-->
-            <ContentControl Content="{Binding CurrentView}" Grid.Row="1" />
+            <ContentControl Content="{Binding CurrentViewModel}" Grid.Row="1" />
         </Grid>
         
     </Grid>
