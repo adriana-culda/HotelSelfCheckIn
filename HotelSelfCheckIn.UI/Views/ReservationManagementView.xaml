@@ -66,8 +66,8 @@
                 <DataGrid.Columns>
                     
                     <!-->Coloana Name<-->
-                    <DataGridTextColumn Header="Client Name" 
-                                        Binding="{Binding Name}"
+                    <DataGridTextColumn Header="Client Username" 
+                                        Binding="{Binding  Username}"
                                         Width="*">
                     </DataGridTextColumn>
                     

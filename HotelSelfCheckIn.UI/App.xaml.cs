@@ -11,6 +11,7 @@ public partial class App : Application
 {
     private FileService _fileService;
     private Manager _manager;
+    private HotelSettings _settings;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -22,35 +23,17 @@ public partial class App : Application
 
         try 
         {
-            // 2. Încărcare Date + Seed Data (Codul tău bun)
-            var (camere, rezervari) = _fileService.Load();
-            bool fisiereExistaC = System.IO.File.Exists("SavedData/camere.json");
-            bool fisiereExistaR = System.IO.File.Exists("SavedData/rezervari.json");
-            var setari = _fileService.LoadSettings();
-
-            if (!fisiereExistaC && camere.Count == 0)
+            try 
             {
-                camere = new List<Room>
-                {
-                    new SingleRoom(101), new DoubleRoom(102), new SingleRoom(103) with { Status = RoomStatus.Occupied },
-                    new FamilyRoom(104) with { Status = RoomStatus.Cleaning }, new TripleRoom(105), new SingleRoom(106),
-                    new DoubleRoom(107) with { Status = RoomStatus.Unavailable }, new FamilyRoom(108), new SingleRoom(109), new DoubleRoom(110)
-                };
-                _fileService.SaveRooms(camere);
+                var (camere, rezervari) = _fileService.Load();
+                var setari = _fileService.LoadSettings();
+                _manager.LoadData(camere, rezervari, setari);
             }
-
-            if (!fisiereExistaR && rezervari.Count == 0)
-            {
-                rezervari = new List<Reservation>
-                {
-                    new Reservation(Guid.NewGuid(), "client1", 103, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(2), ReservationStatus.Active),
-                    new Reservation(Guid.NewGuid(), "client2", 101, DateTime.Now.AddDays(-10), DateTime.Now.AddDays(-5), ReservationStatus.Completed),
-                    new Reservation(Guid.NewGuid(), "client1", 105, DateTime.Now.AddDays(5), DateTime.Now.AddDays(7), ReservationStatus.Pending)
-                };
-                _fileService.SaveReservations(rezervari);
+            catch (Exception ex)
+            { 
+                _manager.LoadData(new List<Room>(), new List<Reservation>(), new HotelSettings());
+                MessageBox.Show("Sistemul a pornit cu o bază de date goală. Eroare: " + ex.Message);
             }
-
-            _manager.LoadData(camere, rezervari, setari);
         }
         catch (Exception ex)
         { 

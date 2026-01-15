@@ -11,6 +11,9 @@ public class CRoomSearchViewModel : ViewModelBase
 {
     private readonly Manager _manager;
     private readonly Client _client;
+    private readonly ClientShellViewModel _shell;
+    private readonly ReservationDisplayItem _existingReservation;
+    private readonly bool _isEditing;
     
     private ViewModelBase _currentViewModel;
     public ViewModelBase CurrentViewModel
@@ -56,15 +59,28 @@ public class CRoomSearchViewModel : ViewModelBase
     public ICommand SelectRoomCommand { get; }
 
     // --- CONSTRUCTOR ---
-    public CRoomSearchViewModel(Manager manager, Client client)
+    public CRoomSearchViewModel(Manager manager, Client client,ClientShellViewModel shell,ReservationDisplayItem existingRes = null)
     {
         _manager = manager;
         _client = client;
+        _shell = shell;
+        if (existingRes != null)
+        {
+            _existingReservation = existingRes;
+            _isEditing = true;
+            // Pre-completam datele din rezervarea veche
+            var res = _manager.GetMyReservations(_client).FirstOrDefault(r => r.ReservationID == existingRes.FullId);
+            if (res != null)
+            {
+                SearchCheckIn = res.StartDate;
+                SearchCheckOut = res.EndDate;
+            }
+        }
 
         SearchRoomsCommand = new RelayCommand(ExecuteSearch);
         SelectRoomCommand = new RelayCommand(ExecuteBook);
         
-        // Ascundem textul "Nu am găsit" la început
+        // Ascundem textul "Nu am gasit" la inceput
         HasNoResults = false;
     }
 
@@ -105,19 +121,8 @@ public class CRoomSearchViewModel : ViewModelBase
     {
         if (parameter is Room selectedRoom)
         {
-            bool success = _manager.CreateClientReservation(_client.Username, selectedRoom.Number, SearchCheckIn, SearchCheckOut);
-            
-            if (success)
-            {
-                MessageBox.Show($"Rezervare reușită pentru camera {selectedRoom.Number}!");
-                AvailableRooms.Remove(selectedRoom); // O scoatem din listă
-                
-                // Opțional: Navigăm către "My Reservations"
-            }
-            else
-            {
-                MessageBox.Show("Eroare: Camera a fost rezervată de altcineva între timp.");
-            }
+            // În loc de rezervare directă, schimbăm View-ul în Shell
+            _shell.CurrentView = new CBookingViewModel(_manager, _client, selectedRoom, SearchCheckIn, SearchCheckOut,_existingReservation);
         }
     }
 }

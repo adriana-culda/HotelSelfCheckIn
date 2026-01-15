@@ -21,6 +21,134 @@
     "RoomNumber": 106,
     "StartDate": "2026-01-19T19:49:44.398721+02:00",
     "EndDate": "2026-01-21T19:49:44.3987212+02:00",
+    "Status": 3
+  },
+  {
+    "ReservationID": "9a021005-0e05-4669-b963-f70059cfb483",
+    "Username": "client",
+    "RoomNumber": 101,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-16T00:00:00+02:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "d8986153-2b46-4d5c-8e2d-9022b679576f",
+    "Username": "client",
+    "RoomNumber": 102,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-16T00:00:00+02:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "80a820d5-6647-4ebe-80cf-796fd202af60",
+    "Username": "client",
+    "RoomNumber": 101,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-17T00:00:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "21747002-3179-492f-a137-995c3e26afb8",
+    "Username": "client",
+    "RoomNumber": 200,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-16T00:00:00+02:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "4be35a34-88dd-4acf-aa16-f662deb53a79",
+    "Username": "client",
+    "RoomNumber": 203,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-25T00:00:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "f4861a76-4f62-41dc-932f-06b8563f5eb0",
+    "Username": "client",
+    "RoomNumber": 110,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-16T00:00:00+02:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "c165cd7c-0e94-43bf-8ef3-53cc849c4fb9",
+    "Username": "client",
+    "RoomNumber": 203,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-22T00:00:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "237d79d9-d306-4f54-a35c-82602426089a",
+    "Username": "client",
+    "RoomNumber": 101,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-22T00:00:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "0e050771-ed01-43ce-9d74-6eaf6937c394",
+    "Username": "client",
+    "RoomNumber": 203,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-16T00:00:00+02:00",
+    "Status": 3
+  },
+  {
+    "ReservationID": "2186f3b5-05f2-401a-8051-b5231e4f8fe0",
+    "Username": "client",
+    "RoomNumber": 102,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-16T00:00:00+02:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "d4bed0cd-2b71-4699-b51f-c4bd26f3586c",
+    "Username": "client",
+    "RoomNumber": 110,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-30T00:00:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "5fc8fc45-2e8f-4a3d-b052-358ae16980d1",
+    "Username": "client",
+    "RoomNumber": 101,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-16T00:00:00+02:00",
+    "Status": 2
+  },
+  {
+    "ReservationID": "97330e04-2b93-42e9-949c-f57a102fe6a3",
+    "Username": "client",
+    "RoomNumber": 203,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-16T00:00:00+02:00",
+    "Status": 3
+  },
+  {
+    "ReservationID": "55e277a9-b9bf-4455-bdb1-c8548ae6e242",
+    "Username": "client2",
+    "RoomNumber": 101,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-29T00:00:00",
+    "Status": 3
+  },
+  {
+    "ReservationID": "0fbc7fc4-3d5b-47df-ab1d-fbe29b650232",
+    "Username": "client2",
+    "RoomNumber": 105,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-29T00:00:00",
+    "Status": 3
+  },
+  {
+    "ReservationID": "19ee71a4-ceaf-4eda-a65c-c90d52617bc1",
+    "Username": "client1",
+    "RoomNumber": 101,
+    "StartDate": "2026-01-15T00:00:00+02:00",
+    "EndDate": "2026-01-17T00:00:00",
     "Status": 1
   }
 ]

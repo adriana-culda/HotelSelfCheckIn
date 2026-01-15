@@ -23,6 +23,21 @@
         <DataTemplate DataType="{x:Type viewmodels:CRoomSearchViewModel}">
             <views:CRoomSearchView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:CBookingViewModel}">
+            <views:CBookingView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:CManageBookingsViewModel}">
+            <views:CManageBookingsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:CStayHistoryViewModel}">
+            <views:CStayHistoryView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:CCheckInOutViewModel}">
+            <views:CCheckInOutView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:AClientListViewModel}">
+            <views:AClientListView/>
+        </DataTemplate>
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>

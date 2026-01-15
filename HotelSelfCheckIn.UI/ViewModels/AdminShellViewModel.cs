@@ -83,6 +83,9 @@ public class AdminShellViewModel : ViewModelBase
                     if (CurrentView is SettingViewModel) return;
                     CurrentView = new SettingViewModel(_manager,_currentAdmin);
                     break;
+                case "Clients":
+                    CurrentView = new AClientListViewModel(_manager);
+                    break;
             }
         }
         catch (Exception ex)

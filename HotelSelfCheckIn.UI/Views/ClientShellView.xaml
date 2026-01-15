@@ -52,19 +52,7 @@
                         Padding="20,0,0,0">
                 </Button>
                 
-                <!-->Buton Client<-->
-                <Button Content="Book a Room"
-                        Click="Nav_Click" 
-                        Tag="Book"
-                        Margin="0,5"
-                        Height="40"
-                        Background="Transparent"
-                        Foreground="White"
-                        BorderThickness="0"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Left"
-                        Padding="20,0,0,0">
-                </Button>
+               
                 
                 <!-->Buton Room<-->
                 <Button Content="Check-In / Out"
@@ -127,7 +115,9 @@
                     <TextBlock Text="{Binding CurrentDateTime}"
                                VerticalAlignment="Center"
                                Foreground="White" 
-                               FontSize="13">
+                               FontSize="14"
+                               FontWeight="Medium">
+                               
                     </TextBlock>
                     
                     <StackPanel Orientation="Horizontal" 
@@ -135,11 +125,12 @@
                                 VerticalAlignment="Center">
                         
                         <!-->Afisare nume admin<-->
-                        <TextBlock Text="{Binding GuestName, StringFormat='Welcome: {0}'}"
+                        <TextBlock Text="{Binding ClientName, StringFormat='Welcome: {0}'}"
                                    Foreground="White"
                                    Margin="0,0,20,0" 
                                    VerticalAlignment="Center" 
-                                   FontWeight="SemiBold">
+                                   FontWeight="SemiBold"
+                                   FontSize="14">
                         </TextBlock>
                         
                         <!-->Buton Log out<-->

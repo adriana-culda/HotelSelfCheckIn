@@ -132,4 +132,9 @@ public class FileService
         }
 #endif
     }
+    public void SaveUsers(List<User> users)
+    {
+        var json = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText("users.json", json);
+    }
 }

@@ -4,7 +4,7 @@
     "Type": "Single",
     "PricePerNight": 150,
     "Number": 101,
-    "Status": 0,
+    "Status": 1,
     "Facilities": []
   },
   {
@@ -20,7 +20,7 @@
     "Type": "Family",
     "PricePerNight": 450,
     "Number": 203,
-    "Status": 2,
+    "Status": 0,
     "Facilities": []
   },
   {
@@ -76,7 +76,7 @@
     "Type": "Double",
     "PricePerNight": 250,
     "Number": 110,
-    "Status": 0,
+    "Status": 1,
     "Facilities": []
   },
   {

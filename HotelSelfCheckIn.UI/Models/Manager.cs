@@ -28,7 +28,9 @@ public class Manager
             _users.Add(new Admin("admin", "admin"));
             
         if (!_users.Any(u => u.Username == "client"))
-            _users.Add(new Client("client", "client"));
+            _users.Add(new Client("client1", "client1"));
+        if (!_users.Any(u => u.Username == "client"))
+            _users.Add(new Client("client2", "client2"));
     }
 
     // Metodă privată pentru salvare automată
@@ -196,6 +198,8 @@ public class Manager
         return !hasOverlap;
     }
     
+    
+    
     //---SETTINGS
     public void UpdateSettings(Admin admin, TimeSpan checkIn, TimeSpan checkOut, int minDays, string rules)
     {
@@ -210,6 +214,8 @@ public class Manager
     public IEnumerable<Room> GetRoomsForClient() => _rooms.Where(r => r.Status == RoomStatus.Free).ToList();
     
     public IEnumerable<Reservation> GetMyReservations(Client client) => _reservations.Where(r => r.Username == client.Username).ToList();
+    
+    
 
     public void CancelReservation(Client client, Guid reservationId)
     {
@@ -265,5 +271,10 @@ public class Manager
         {
             return false;
         }
+    }
+    public void SaveUsers()
+    {
+        // Trimitem lista de utilizatori către FileService pentru a fi scrisă în fișier
+        _fileService.SaveUsers(_users);
     }
 }

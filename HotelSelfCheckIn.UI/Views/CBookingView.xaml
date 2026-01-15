@@ -105,7 +105,7 @@
                 </TextBlock>
                 
                 <!-->Camera aleasa<-->
-                <TextBlock Text="{Binding SelectedRoom.RoomName}" 
+                <TextBlock Text="{Binding SelectedRoom.Number}" 
                            FontWeight="Bold"
                            Margin="0,0,0,10" >
                 </TextBlock>
