@@ -17,7 +17,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        // 1. Inițializare Backend
+        // 1. Initializare Backend
         _fileService = new FileService();
         _manager = new Manager(_fileService);
 
@@ -25,28 +25,28 @@ public partial class App : Application
         {
             try 
             {
-                var (camere, rezervari) = _fileService.Load();
+                var (camere, rezervari,users) = _fileService.Load();
                 var setari = _fileService.LoadSettings();
-                _manager.LoadData(camere, rezervari, setari);
+                _manager.LoadData(camere, rezervari,users, setari);
             }
             catch (Exception ex)
             { 
-                _manager.LoadData(new List<Room>(), new List<Reservation>(), new HotelSettings());
-                MessageBox.Show("Sistemul a pornit cu o bază de date goală. Eroare: " + ex.Message);
+                _manager.LoadData(new List<Room>(), new List<Reservation>(),new List<User>(), new HotelSettings());
+                MessageBox.Show("Sistemul a pornit cu o baza de date goala. Eroare: " + ex.Message);
             }
         }
         catch (Exception ex)
         { 
-            MessageBox.Show("Eroare la încărcarea datelor: " + ex.Message);
+            MessageBox.Show("Eroare la Incarcarea datelor: " + ex.Message);
         }
 
-        // 3. PORNIRE APLICAȚIE (MVVM PUR)
-        // Nu mai facem nicio logică manuală aici. MainViewModel se ocupă de tot.
+        // 3. PORNIRE APLICATIE (MVVM)
+        
         
         var mainWindow = new MainWindow();
         var mainViewModel = new MainViewModel(_manager,_fileService); // MainViewModel va porni automat cu Login
         
-        mainWindow.DataContext = mainViewModel; // Legătura magică
+        mainWindow.DataContext = mainViewModel; // Legatura magica
         mainWindow.Show();
     }
 }

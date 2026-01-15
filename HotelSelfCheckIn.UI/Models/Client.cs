@@ -10,7 +10,5 @@ public record Client: User
 
 
     public Client(string username, string password, string name = "") : base(username, password, "None")
-    {
-        Name = name;
-    }
+    { }
 }

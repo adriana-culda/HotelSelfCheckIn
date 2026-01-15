@@ -33,7 +33,7 @@ public class ClientShellViewModel : ViewModelBase
     public ICommand NavigateMyBookingsCommand { get; }
     public ICommand LogoutCommand { get; }
 
-    // ADĂUGĂM Action onLogout ca al treilea parametru
+    // ADaUGAM Action onLogout ca al treilea parametru
     public ClientShellViewModel(Manager manager, Client client, Action onLogout)
     {
         _manager = manager;
@@ -46,7 +46,7 @@ public class ClientShellViewModel : ViewModelBase
         LogoutCommand = new RelayCommand(_ => Logout());
         
         
-        // Pagina de start implicită (asigură-te că proprietatea se numește CurrentView, nu CurrentViewModel)
+        // Pagina de start implicita 
         Navigate("Reserve");
         
         _timer = new DispatcherTimer();

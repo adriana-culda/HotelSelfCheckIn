@@ -9,6 +9,5 @@ public partial class LoginView : UserControl
         InitializeComponent();
     }
 
-    // AM ȘTERS BtnLogin_Click. 
-    // Butonul din XAML trebuie să folosească Command="{Binding LoginCommand}"
+    
 }

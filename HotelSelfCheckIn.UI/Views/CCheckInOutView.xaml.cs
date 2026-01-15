@@ -9,7 +9,5 @@ public partial class CCheckInOutView : UserControl
         InitializeComponent();
     }
 
-    // Am eliminat metodele BtnCheckIn_Click și BtnCheckOut_Click.
-    // Logica de verificare a codului și afișarea mesajelor vor fi
-    // gestionate de colegul tău în CheckInOutViewModel.cs.
+    
 }

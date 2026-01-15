@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using HotelSelfCheckIn.UI.Models; // Asigură-te că namespace-ul e corect pentru Room, Admin, Manager
+using HotelSelfCheckIn.UI.Models; // Asigura-te ca namespace-ul e corect pentru Room, Admin, Manager
 using System.Linq;
 
 namespace HotelSelfCheckIn.UI.ViewModels;
@@ -9,9 +9,9 @@ namespace HotelSelfCheckIn.UI.ViewModels;
 public class AdminViewModel : ViewModelBase
 {
     private readonly Manager _manager;
-    private readonly Admin _currentAdmin; // <--- Trebuie să ținem minte cine e șeful
+    private readonly Admin _currentAdmin; 
 
-    // Lista vizibilă în tabel
+    // Lista vizibila In tabel
     public ObservableCollection<Room> Camere { get; set; }
 
     // Statistici (Dashboard)
@@ -24,7 +24,7 @@ public class AdminViewModel : ViewModelBase
     public ICommand CheckInCommand { get; }
     public ICommand CheckOutCommand { get; }
 
-    // Constructorul cere Managerul ȘI Adminul logat
+    // Constructorul cere Managerul si Adminul logat
     public AdminViewModel(Manager manager, Admin adminLogat)
     {
         _manager = manager;
@@ -34,7 +34,7 @@ public class AdminViewModel : ViewModelBase
         var roomsList = _manager.GetAllRooms(_currentAdmin);
         Camere = new ObservableCollection<Room>(roomsList);
 
-        // 2. Configurăm butoanele
+        // 2. Configuram butoanele
         CheckInCommand = new RelayCommand(ExecuteCheckIn);
         CheckOutCommand = new RelayCommand(ExecuteCheckOut);
     }
@@ -43,12 +43,12 @@ public class AdminViewModel : ViewModelBase
     {
         if (parameter is int roomNumber)
         {
-            // Căutăm camera în lista locală ca să vedem statusul curent
+            // Cautam camera In lista locala ca sa vedem statusul curent
             var room = Camere.FirstOrDefault(r => r.Number == roomNumber);
             
             if (room != null && room.Status == RoomStatus.Free) // Sau RoomStatus.Available
             {
-                // Apelăm metoda ta din Manager: SetRoomStatus
+                // Apelam metoda din Manager: SetRoomStatus
                 _manager.SetRoomStatus(_currentAdmin, roomNumber, RoomStatus.Occupied);
                 
                 RefreshLista();
@@ -56,7 +56,7 @@ public class AdminViewModel : ViewModelBase
             }
             else
             {
-                MessageBox.Show("Camera nu este liberă!", "Eroare");
+                MessageBox.Show("Camera nu este libera!", "Eroare");
             }
         }
     }
@@ -65,24 +65,24 @@ public class AdminViewModel : ViewModelBase
     {
         if (parameter is int roomNumber)
         {
-            // Apelăm metoda ta din Manager pentru a elibera camera
+            // Apelam metoda  din Manager pentru a elibera camera
             _manager.SetRoomStatus(_currentAdmin, roomNumber, RoomStatus.Cleaning); // Sau Free direct
             
             RefreshLista();
-            MessageBox.Show($"Check-Out efectuat. Camera {roomNumber} e la curățenie.", "Info");
+            MessageBox.Show($"Check-Out efectuat. Camera {roomNumber} e la curatenie.", "Info");
         }
     }
 
-    // Funcție critică: Reîmprospătăm tabelul după modificări
+    // Functie critica: ReImprospatam tabelul dupa modificari
     private void RefreshLista()
     {
         Camere.Clear();
-        // Cerem din nou lista actualizată din Manager
+        // Cerem din nou lista actualizata din Manager
         foreach (var r in _manager.GetAllRooms(_currentAdmin))
         {
             Camere.Add(r);
         }
-        // Actualizăm și cifrele de sus
+        // Actualizam si cifrele de sus
         OnPropertyChanged(nameof(TotalRooms));
         OnPropertyChanged(nameof(TotalReservations));
     }

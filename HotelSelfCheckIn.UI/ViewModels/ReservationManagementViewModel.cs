@@ -23,7 +23,7 @@ public class ReservationManagementViewModel : ViewModelBase
         set { _reservations = value; OnPropertyChanged(); }
     }
 
-    // --- SELECȚIA ---
+    // --- SELECTIA ---
     private Reservation _selectedReservation;
     public Reservation SelectedReservation
     {
@@ -31,17 +31,17 @@ public class ReservationManagementViewModel : ViewModelBase
         set { _selectedReservation = value; OnPropertyChanged(); }
     }
 
-    // --- COMENZI 
+    // --- COMENZI ---
     public ICommand ShowActiveCommand { get; }
     public ICommand ShowHistoryCommand { get; }
     
-    //--- BUTOANE
+    //--- BUTOANE ---
     public ICommand EditReservationCommand { get; }
     public ICommand RemoveReservationCommand { get; } 
     public ICommand CompleteReservationCommand { get; }
     public ICommand CancelReservationCommand { get; }
     
-    //---CONSTRUCTOR
+    //---CONSTRUCTOR ---
     public ReservationManagementViewModel(Manager manager, Admin currentAdmin, FileService fileService)
     {
         _manager = manager;
@@ -63,7 +63,7 @@ public class ReservationManagementViewModel : ViewModelBase
         
     }
     
-    //---ALGORITMI
+    //---ALGORITMI ---
 
 
     private void LoadReservations(bool activeOnly)
@@ -78,7 +78,7 @@ public class ReservationManagementViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Eroare la încărcarea listei: {ex.Message}");
+            MessageBox.Show($"Eroare la Incarcarea listei: {ex.Message}");
         }
     }
 

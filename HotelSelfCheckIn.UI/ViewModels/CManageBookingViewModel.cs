@@ -41,7 +41,7 @@ public class CManageBookingsViewModel : ViewModelBase
     {
         ActiveBookings.Clear();
         
-        // Luăm rezervările de la manager pentru acest client
+        // Luam rezervarile de la manager pentru acest client
         var myReservations = _manager.GetMyReservations(_client)
                                      .Where(r => r.Status == ReservationStatus.Active);
 
@@ -53,8 +53,8 @@ public class CManageBookingsViewModel : ViewModelBase
                 FullId = res.ReservationID,
                 RoomNumber = res.RoomNumber,
                 StayInterval = $"{res.StartDate:dd MMM} - {res.EndDate:dd MMM yyyy}",
-                // Tipul camerei îl luăm din lista de camere a managerului
-                RoomType = "Room " + res.RoomNumber // Poți extinde logica să caute tipul exact (Single/Double)
+                // Tipul camerei Il luam din lista de camere a managerului
+                RoomType = "Room " + res.RoomNumber 
             });
         }
 
@@ -73,7 +73,7 @@ public class CManageBookingsViewModel : ViewModelBase
                 try 
                 {
                     _manager.CancelReservation(_client, item.FullId);
-                    LoadBookings(); // Refresh listă
+                    LoadBookings(); // Refresh lista
                 }
                 catch (Exception ex)
                 {

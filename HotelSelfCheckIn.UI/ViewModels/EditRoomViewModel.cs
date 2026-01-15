@@ -9,7 +9,7 @@ namespace HotelSelfCheckIn.UI.ViewModels;
 
 public class EditRoomViewModel : ViewModelBase
 {
-    // Proprietatea legată în XAML: {Binding SelectedRoom...}
+    // Proprietatea legata In XAML: {Binding SelectedRoom...}
     private RoomInputData _selectedRoom;
     public RoomInputData SelectedRoom
     {
@@ -17,28 +17,28 @@ public class EditRoomViewModel : ViewModelBase
         set { _selectedRoom = value; OnPropertyChanged(); }
     }
 
-    // Lista pentru ComboBox-ul de status
+    // Lista pentru status
     public IEnumerable<RoomStatus> StatusList { get; }
 
     public ICommand SaveEditRoomCommand { get; }
     public Action<bool> CloseAction { get; set; }
 
-    // Rezultatul final care va fi trimis către Manager
+    // Rezultatul final care va fi trimis catre Manager
     public Room ResultRoom { get; private set; }
 
     public EditRoomViewModel(Room roomToEdit)
     {
-        // 1. Populăm lista de statusuri pentru ComboBox
+        // 1. Populam lista de statusurix
         StatusList = Enum.GetValues(typeof(RoomStatus)).Cast<RoomStatus>();
 
-        // 2. Copiem datele camerei reale în obiectul nostru de editare (DTO)
-        // Folosim RoomInputData pentru a evita problemele cu clasa abstractă Room
+        // 2. Copiem datele camerei reale In obiectul nostru de editare (DTO)
+        // Folosim RoomInputData pentru a evita problemele cu clasa abstracta Room
         SelectedRoom = new RoomInputData
         {
             RoomNumber = roomToEdit.Number,
             Type = roomToEdit.Type,
             Status = roomToEdit.Status
-            // Prețul nu îl mai punem, se ia automat din tipul camerei
+            // Pretul nu Il mai punem, se ia automat din tipul camerei
         };
 
         SaveEditRoomCommand = new RelayCommand(ExecuteSave);
@@ -64,12 +64,12 @@ public class EditRoomViewModel : ViewModelBase
             else if (tip.Contains("triple")) ResultRoom = new TripleRoom(SelectedRoom.RoomNumber);
             else ResultRoom = new SingleRoom(SelectedRoom.RoomNumber); // Fallback
 
-            // Aplicăm statusul selectat în ComboBox
-            // Folosim 'with' dacă Room e record, sau setare directă dacă e clasă
+            // Aplicam statusul selectat
+            // Folosim 'with' daca Room e record, sau setare directa daca e clasa
             if (ResultRoom is Room r) 
             {
                 // Deoarece RoomInputData e doar date, trebuie sa aplicam statusul pe obiectul creat
-                // Soluția rapidă pentru record-uri:
+                // Solutia rapida pentru record-uri:
                 if(ResultRoom is SingleRoom s) ResultRoom = s with { Status = SelectedRoom.Status };
                 else if(ResultRoom is DoubleRoom d) ResultRoom = d with { Status = SelectedRoom.Status };
                 else if(ResultRoom is FamilyRoom f) ResultRoom = f with { Status = SelectedRoom.Status };

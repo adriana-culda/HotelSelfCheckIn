@@ -21,7 +21,7 @@ public class CRoomSearchViewModel : ViewModelBase
         get => _currentViewModel;
         set { _currentViewModel = value; OnPropertyChanged(); }
     }
-    // --- INPUT BINDINGS (Ce ai în XAML) ---
+    // --- INPUT BINDINGS (Ce e In XAML) ---
     
     private DateTime _searchCheckIn = DateTime.Today;
     public DateTime SearchCheckIn
@@ -88,32 +88,32 @@ public class CRoomSearchViewModel : ViewModelBase
     {
         if (SearchCheckIn >= SearchCheckOut)
         {
-            MessageBox.Show("Data de Check-Out trebuie să fie după Check-In!");
+            MessageBox.Show("Data de Check-Out trebuie sa fie dupa Check-In!");
             return;
         }
 
         // 1. Golim lista veche
         AvailableRooms.Clear();
 
-        // 2. Căutăm în Manager
+        // 2. Cautam In Manager
         var rooms = _manager.FindAvailableRooms(SearchCheckIn, SearchCheckOut);
 
-        // 3. Filtrăm după Tipul Camerei (dacă a fost selectat ceva în ComboBox)
+        // 3. Filtram dupa Tipul Camerei (daca a fost selectat ceva In ComboBox)
         if (!string.IsNullOrEmpty(SelectedRoomType))
         {
-            // Convertim string-ul din ComboBox ("Single Room") în Enum-ul RoomType
-            // Sau facem o comparare simplă de string-uri
+            // Convertim string-ul din ComboBox ("Single Room") In Enum-ul RoomType
+            // Sau facem o comparare simpla de string-uri
             rooms = rooms.Where(r => r.Type.ToString() + " Room" == SelectedRoomType || 
                                      r.Type.ToString() == SelectedRoomType).ToList();
         }
 
-        // 4. Adăugăm în listă
+        // 4. Adaugam In lista
         foreach (var room in rooms)
         {
             AvailableRooms.Add(room);
         }
 
-        // 5. Actualizăm vizibilitatea mesajului de eroare
+        // 5. Actualizam vizibilitatea mesajului de eroare
         HasNoResults = AvailableRooms.Count == 0;
     }
 
@@ -121,7 +121,7 @@ public class CRoomSearchViewModel : ViewModelBase
     {
         if (parameter is Room selectedRoom)
         {
-            // În loc de rezervare directă, schimbăm View-ul în Shell
+            // In loc de rezervare directa, schimbam View-ul In Shell
             _shell.CurrentView = new CBookingViewModel(_manager, _client, selectedRoom, SearchCheckIn, SearchCheckOut,_existingReservation);
         }
     }

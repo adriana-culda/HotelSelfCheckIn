@@ -6,7 +6,7 @@ namespace HotelSelfCheckIn.UI.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     private readonly Manager _manager;
-    private readonly FileService _fileService; // <--- Îl păstrăm aici
+    private readonly FileService _fileService; 
     private ViewModelBase _currentView;
 
     public ViewModelBase CurrentView
@@ -15,7 +15,7 @@ public class MainViewModel : ViewModelBase
         set { _currentView = value; OnPropertyChanged(); }
     }
 
-    // Constructorul primește acum și FileService
+    // Constructorul primeste acum si FileService
     public MainViewModel(Manager manager, FileService fileService)
     {
         _manager = manager;
@@ -28,13 +28,13 @@ public class MainViewModel : ViewModelBase
     {
         if (user is Admin adminUser)
         {
-            // AICI ESTE CHEIA:
+            
             // Trimitem 4 parametri: Manager, Admin, FileService (pt codul tau vechi) si Action (pt logout)
             CurrentView = new AdminShellViewModel(_manager, adminUser, _fileService);
         }
         else if (user is Client clientUser)
         {
-            // La client nu ai nevoie de FileService, deci rămâne simplu
+            // La client nu e nevoie de FileService
             CurrentView = new ClientShellViewModel(_manager, clientUser,OnLogout);
         }
     }

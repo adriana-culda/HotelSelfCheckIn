@@ -8,13 +8,15 @@ public class AClientListViewModel : ViewModelBase
 {
     private readonly Manager _manager;
 
+    
     public ObservableCollection<Client> Clients { get; set; }
 
     public AClientListViewModel(Manager manager)
     {
         _manager = manager;
-        var clientData = _manager.GetAllClients().OfType<Client>();
-    
-        Clients = new ObservableCollection<Client>(clientData);
+        
+        // Acum _manager.GetAllClients() returneaza List<Client>, 
+        // deci constructorul ObservableCollection(IEnumerable<Client>) este gasit
+        Clients = new ObservableCollection<Client>(_manager.GetAllClients());
     }
 }

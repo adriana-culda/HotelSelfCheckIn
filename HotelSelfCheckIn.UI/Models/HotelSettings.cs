@@ -5,7 +5,7 @@ public record HotelSettings
     public TimeSpan CheckInStart { get; init; }
     public TimeSpan CheckOutEnd { get; init; }
     
-    // --- CÂMPURI NOI PENTRU UI ---
+    // --- CaMPURI NOI PENTRU UI ---
     public int MinReservationDays { get; init; }
     
 

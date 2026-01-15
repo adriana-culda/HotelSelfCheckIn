@@ -13,13 +13,13 @@ public partial class ClientShellView : UserControl
 
     private void Nav_Click(object sender, RoutedEventArgs e)
     {
-        // 1. Identificăm butonul apăsat
+        // 1. Identificam butonul apasat
         if (sender is Button btn && btn.Tag is string tag)
         {
-            // 2. Obținem ViewModel-ul din spatele ferestrei
+            // 2. Obtinem ViewModel-ul din spatele ferestrei
             if (this.DataContext is ClientShellViewModel vm)
             {
-                // 3. Apelăm metoda de navigare
+                // 3. Apelam metoda de navigare
                 vm.Navigate(tag);
             }
         }

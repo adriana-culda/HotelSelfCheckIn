@@ -12,7 +12,7 @@ public class CBookingViewModel : ViewModelBase
     private readonly ReservationDisplayItem _resToUpdate;
     private readonly ClientShellViewModel _shell;
 
-    // Proprietățile pentru Binding-ul din XAML-ul tău
+    // Proprietatile pentru Binding-ul din XAML-ul tau
     public Room SelectedRoom { get; }
     public DateTime ArrivalDate { get; }
     public DateTime DepartureDate { get; }
@@ -41,41 +41,41 @@ public class CBookingViewModel : ViewModelBase
                 .FirstOrDefault(r => r.ReservationID == _resToUpdate.FullId);
             if (oldRes != null)
             {
-                // SpecialRequests = oldRes.SpecialRequests; // Dacă ai salvat asta în Rezervare
+                // SpecialRequests = oldRes.SpecialRequests; 
             }
         } 
         
-        // Calcul preț total
+        // Calcul pret total
         int nights = (checkOut.Date - checkIn.Date).Days;
         TotalAmount = (decimal)(room.PricePerNight * (nights > 0 ? nights : 1));
 
-        ConfirmBookingCommand = new RelayCommand(_ => ExecuteConfirm());
+        ConfirmBookingCommand = new RelayCommand(_ => ExecuteFinalize());
     }
 
     private void ExecuteConfirm()
     {
-        // Aici apelăm managerul pentru a salva rezervarea finală
+        // Aici apelam managerul pentru a salva rezervarea finala
         bool success = _manager.CreateClientReservation(_client.Username, SelectedRoom.Number, ArrivalDate, DepartureDate);
 
         if (success)
         {
             MessageBox.Show("Booking confirmed! Enjoy your stay.", "Success");
-            // Opțional: Navighează înapoi la Search sau la My Reservations
+            // Optional: Navigheaza Inapoi la Search sau la My Reservations
         }
         else
         {
             MessageBox.Show("Something went wrong. Please try again.");
         }
     }
+
     private void ExecuteFinalize()
     {
-        // 1. Actualizăm obiectul Client cu datele introduse în UI
-        // Aceste date vin din TextBox-urile legate (Binding) la GuestName, GuestEmail, etc.
+        // 1. Transferam datele de pe ecran In obiectul Client
         _client.Name = GuestName;
         _client.Email = GuestEmail;
         _client.Phone = GuestPhone;
 
-        // 2. Executăm logica de rezervare (existentă)
+        // 2. Executam rezervarea
         bool success;
         if (_resToUpdate != null)
         {
@@ -87,14 +87,16 @@ public class CBookingViewModel : ViewModelBase
             success = _manager.CreateClientReservation(_client.Username, SelectedRoom.Number, ArrivalDate, DepartureDate);
         }
 
-        // 3. Dacă rezervarea a reușit, salvăm și profilul actualizat al utilizatorului
+        // 3. Salvam datele permanent
         if (success)
         {
-            _manager.SaveUsers(); // Aici se apelează metoda nouă
-            MessageBox.Show("Booking confirmed! Your contact details have been saved to your profile.");
-        
-            // Navigăm înapoi la My Reservations
-            _shell.Navigate("Manage");
+            // Aceasta scrie In SavedData/users.json prin FileService
+            _manager.SaveUsers(); 
+
+            MessageBox.Show("Booking confirmed! Your profile has been updated.", "Success");
+
+            // Ne Intoarcem la lista de rezervari
+            _shell?.Navigate("Manage");
         }
     }
 }

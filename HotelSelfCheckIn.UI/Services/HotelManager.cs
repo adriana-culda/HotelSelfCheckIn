@@ -1,28 +1,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using HotelSelfCheckIn.UI.Models;
-using HotelSelfCheckIn.UI.Data; // <--- Importăm namespace-ul unde ai pus DataService
+using HotelSelfCheckIn.UI.Data;
 
 namespace HotelSelfCheckIn.Services
 {
     public class HotelManager
     {
-        private readonly DataService _dataService; // Folosim clasa ta DataService
+        private readonly DataService _dataService; 
         private List<Camera> _toateCamerele;
         private const string CAMERE_FILE = "camere.json";
 
-        // Constructorul primește DataService-ul tău
+        
         public HotelManager(DataService dataService)
         {
             _dataService = dataService;
             
-            // Folosim metoda ta .Load()
+           
             _toateCamerele = _dataService.Load<List<Camera>>(CAMERE_FILE);
             
-            // Dacă lista e goală (fișierul nu exista), creăm datele
+            // Daca lista e goala (fisierul nu exista), cream datele
             if (_toateCamerele == null || !_toateCamerele.Any())
             {
-                _toateCamerele = new List<Camera>(); // Inițializăm lista dacă e null
+                _toateCamerele = new List<Camera>(); // Initializam lista daca e null
                 SeedData();
             }
         }
@@ -40,7 +40,7 @@ namespace HotelSelfCheckIn.Services
             var camera = _toateCamerele[index];
             if (camera.Status != StatusCamera.Libera) return false;
 
-            // Modificăm statusul
+            // Modificam statusul
             var cameraOcupata = camera with { Status = StatusCamera.Ocupata };
             _toateCamerele[index] = cameraOcupata;
             
@@ -63,13 +63,13 @@ namespace HotelSelfCheckIn.Services
 
         private void SaveChanges()
         {
-            // Folosim metoda ta .Save()
+            
             _dataService.Save(CAMERE_FILE, _toateCamerele);
         }
 
         private void SeedData()
         {
-            // Aici se creează datele inițiale
+            // Aici se creeaza datele initiale
             _toateCamerele.Add(new CameraSingle(101, new List<string> { "TV", "Wi-Fi" }) 
             { 
                 Status = StatusCamera.Libera 
@@ -80,7 +80,7 @@ namespace HotelSelfCheckIn.Services
                 Status = StatusCamera.Ocupata 
             });
 
-            // AICI se creează efectiv fișierul 'camere.json' pe disc prima dată!
+            // AICI se creeaza efectiv fisierul 'camere.json' pe disc prima data
             SaveChanges();
         }
     }

@@ -6,7 +6,7 @@ using System.Linq;
 
 public class Manager
 {
-    // Referința către serviciul de fișiere
+    // Referinta catre serviciul de fisiere
     private readonly FileService _fileService;
 
     // Listele de date
@@ -17,13 +17,13 @@ public class Manager
     public HotelSettings GetSettings() => _settings;
 
     // ---------------------------------------------------------
-    // CONSTRUCTORUL (Rezolvă eroarea CS7036 dacă e apelat corect)
+    // CONSTRUCTORUL (Rezolva eroarea CS7036 daca e apelat corect)
     // ---------------------------------------------------------
     public Manager(FileService fileService)
     {
         _fileService = fileService;
 
-        // Useri default (ca să te poți loga)
+        // Useri default (ca sa te poti loga)
         if (!_users.Any(u => u.Username == "admin")) 
             _users.Add(new Admin("admin", "admin"));
             
@@ -33,7 +33,7 @@ public class Manager
             _users.Add(new Client("client2", "client2"));
     }
 
-    // Metodă privată pentru salvare automată
+    // Metoda privata pentru salvare automata
     private void SaveChanges()
     {
         _fileService.SaveRooms(_rooms);
@@ -42,7 +42,7 @@ public class Manager
     }
 
     // =========================================================
-    // METODE PENTRU AUTH & LOAD (Rezolvă erorile CS1061)
+    // METODE PENTRU AUTH & LOAD (Rezolva erorile CS1061)
     // =========================================================
 
     public User? Authenticate(string username, string password)
@@ -50,12 +50,19 @@ public class Manager
         return _users.FirstOrDefault(u => u.Username == username && u.Password == password);
     }
 
-    public void LoadData(List<Room> rooms, List<Reservation> reservations, HotelSettings settings)
+    public void LoadData(List<Room> rooms, List<Reservation> reservations,List<User> users, HotelSettings settings)
     {
         _rooms = rooms ?? new List<Room>();
         _reservations = reservations ?? new List<Reservation>();
+        _users = users ?? new List<User>();  
+        if (!_users.Any())
+        {
+            _users.Add(new Admin("admin", "admin"));
+            _users.Add(new Client("client1", "client1"));
+            _users.Add(new Client("client2", "client2"));
+        }
         
-        // Dacă settings e null (fișier lipsă), păstrăm default-ul, altfel luăm ce am citit
+        // Daca settings e null (fisier lipsa), pastram default-ul, altfel luam ce am citit
         if (settings != null) 
         {
             _settings = settings;
@@ -70,7 +77,14 @@ public class Manager
             _users.Add(newUser);
     }
     
-    public IEnumerable<User> GetAllClients() => _users.OfType<Client>().ToList();
+    public List<Client> GetAllClients()
+    {
+        // OfType<Client>() face doua lucruri:
+        // 1. Filtreaza doar obiectele care sunt de tip Client (ignora Adminii)
+        // 2. Schimba tipul rezultatului In IEnumerable<Client>
+        return _users.OfType<Client>().ToList(); 
+    }
+    
 
     // =========================================================
     // LOGICA DE BUSINESS (Camere & Rezervari)
@@ -124,14 +138,14 @@ public class Manager
         }
     }
 
-    // --- REZERVĂRI
+    // --- REZERVaRI
 
     public void CreateReservation(Admin admin, string username, int roomNumber, DateTime start, DateTime end)
     {
         var room = _rooms.FirstOrDefault(r => r.Number == roomNumber);
-        if (room == null) throw new KeyNotFoundException("Camera nu există.");
+        if (room == null) throw new KeyNotFoundException("Camera nu exista.");
 
-        if (!IsRoomAvailable(roomNumber, start, end)) throw new InvalidOperationException("Camera nu este disponibilă.");
+        if (!IsRoomAvailable(roomNumber, start, end)) throw new InvalidOperationException("Camera nu este disponibila.");
 
         var newRes = new Reservation(Guid.NewGuid(), username, roomNumber, start, end, ReservationStatus.Active);
         _reservations.Add(newRes);
@@ -157,7 +171,7 @@ public class Manager
     public void AdminUpdateReservation(Admin admin, Guid reservationId, int newRoomNumber, DateTime newStart, DateTime newEnd)
     {
         var oldRes = _reservations.FirstOrDefault(r => r.ReservationID == reservationId);
-        if (oldRes == null) throw new KeyNotFoundException("Rezervarea nu există.");
+        if (oldRes == null) throw new KeyNotFoundException("Rezervarea nu exista.");
 
         bool isAvailable = !_reservations.Any(other => 
             other.ReservationID != reservationId && 
@@ -166,7 +180,7 @@ public class Manager
             newStart < other.EndDate &&
             newEnd > other.StartDate);
 
-        if (!isAvailable) throw new InvalidOperationException("Camera nu este disponibilă.");
+        if (!isAvailable) throw new InvalidOperationException("Camera nu este disponibila.");
 
         var newRes = oldRes with { RoomNumber = newRoomNumber, StartDate = newStart, EndDate = newEnd };
         _reservations[_reservations.IndexOf(oldRes)] = newRes;
@@ -203,10 +217,10 @@ public class Manager
     //---SETTINGS
     public void UpdateSettings(Admin admin, TimeSpan checkIn, TimeSpan checkOut, int minDays, string rules)
     {
-        // Creăm o instanță nouă (pentru că record-urile sunt imutabile sau pentru a înlocui tot obiectul)
+        // Cream o instanta noua (pentru ca record-urile sunt imutabile sau pentru a Inlocui tot obiectul)
         _settings = new HotelSettings(checkIn, checkOut, minDays);
         
-        // Salvăm fizic în settings.json
+        // Salvam fizic In settings.json
         _fileService.SaveSettings(_settings); 
     }
 
@@ -220,8 +234,8 @@ public class Manager
     public void CancelReservation(Client client, Guid reservationId)
     {
         var res = _reservations.FirstOrDefault(r => r.ReservationID == reservationId && r.Username == client.Username);
-        if (res == null) throw new KeyNotFoundException("Rezervare inexistentă.");
-        if(res.Status == ReservationStatus.Completed) throw new InvalidOperationException("Nu poți anula o rezervare finalizată.");
+        if (res == null) throw new KeyNotFoundException("Rezervare inexistenta.");
+        if(res.Status == ReservationStatus.Completed) throw new InvalidOperationException("Nu poti anula o rezervare finalizata.");
         
         int index = _reservations.IndexOf(res);
         _reservations[index] = res with {Status = ReservationStatus.Cancelled};
@@ -230,10 +244,10 @@ public class Manager
     //---UI CLIENT
     public List<Room> FindAvailableRooms(DateTime start, DateTime end)
     {
-        // 1. Luăm toate camerele care nu sunt "Unavailable" (scoase din uz)
+        // 1. Luam toate camerele care nu sunt "Unavailable" (scoase din uz)
         var candidateRooms = _rooms.Where(r => r.Status != RoomStatus.Unavailable).ToList();
 
-        // 2. Filtrăm camerele care au deja rezervări active ce se suprapun cu perioada cerută
+        // 2. Filtram camerele care au deja rezervari active ce se suprapun cu perioada ceruta
         var availableRooms = candidateRooms.Where(room => 
         {
             bool hasOverlap = _reservations.Any(res => 
@@ -272,9 +286,9 @@ public class Manager
             return false;
         }
     }
+
     public void SaveUsers()
     {
-        // Trimitem lista de utilizatori către FileService pentru a fi scrisă în fișier
         _fileService.SaveUsers(_users);
     }
 }

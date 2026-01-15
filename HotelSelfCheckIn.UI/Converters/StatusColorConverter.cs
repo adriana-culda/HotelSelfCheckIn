@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using HotelSelfCheckIn.UI.Models; // Asigură-te că ai acces la Enum-ul RoomStatus
+using HotelSelfCheckIn.UI.Models; // Asigura-te ca ai acces la Enum-ul RoomStatus
 
 namespace HotelSelfCheckIn.UI.Converters;
 

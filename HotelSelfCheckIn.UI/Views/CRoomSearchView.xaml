@@ -116,7 +116,7 @@
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto">
             <Grid>
-                <TextBlock Text="Nu am găsit camere disponibile pentru perioada selectată." 
+                <TextBlock Text="Nu am gasit camere disponibile pentru perioada selectata." 
                            Visibility="{Binding HasNoResults, Converter={StaticResource BooleanToVisibilityConverter}}"
                            HorizontalAlignment="Center" 
                            Margin="0,50,0,0"

@@ -9,11 +9,10 @@ public class ClientManagementViewModel : ViewModelBase
 
     public ClientManagementViewModel(Manager manager)
     {
-        // Managerul tău ar trebui să aibă o metodă GetClients()
-        // Dacă nu are, adaug-o în Manager.cs: public IEnumerable<User> GetClients() => _users.Where(u => u is Client);
+        // manager.GetAllClients() acum returneaza List<Client>
+        var realClients = manager.GetAllClients();
         
-        // Mockup pentru exemplu dacă nu ai metoda încă:
-        Clients = new ObservableCollection<User>();
-        Clients.Add(new Client("clientul", "pass") { Name = "Ion Popescu", Email = "ion@test.com" ,Phone ="+40719459130"});
+        // Acum tipurile se potrivesc perfect
+        Clients = new ObservableCollection<User>(realClients);
     }
 }

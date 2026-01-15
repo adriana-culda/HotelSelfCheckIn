@@ -35,9 +35,7 @@
         <DataTemplate DataType="{x:Type viewmodels:CCheckInOutViewModel}">
             <views:CCheckInOutView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:AClientListViewModel}">
-            <views:AClientListView/>
-        </DataTemplate>
+        
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>

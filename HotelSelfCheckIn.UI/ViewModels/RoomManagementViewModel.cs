@@ -21,7 +21,7 @@ public class RoomManagementViewModel : ViewModelBase
         set { _rooms = value; OnPropertyChanged(); }
     }
 
-    // --- SELECȚIA ---
+    // --- SELECtIA ---
     private Room _selectedRoom;
     public Room SelectedRoom
     {
@@ -95,17 +95,17 @@ public class RoomManagementViewModel : ViewModelBase
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Eroare la adăugare: {ex.Message}");
+                MessageBox.Show($"Eroare la adaugare: {ex.Message}");
             }
         }
     }
 
-    // --- 2. EDITARE
+    // --- 2. EDITARE ---
     private void ExecuteEdit(object parameter)
     {
         if (SelectedRoom == null)
         {
-            MessageBox.Show("Selectează o cameră pentru modificare.");
+            MessageBox.Show("Selecteaza o camera pentru modificare.");
             return;
         }
 
@@ -138,19 +138,19 @@ public class RoomManagementViewModel : ViewModelBase
         }
     }
 
-    // --- 3. ȘTERGERE
+    // --- 3. STERGERE
     private void ExecuteRemove(object parameter)
     {
         var roomToDelete = parameter as Room ?? SelectedRoom;
 
         if (roomToDelete == null)
         {
-            MessageBox.Show("Selectează o cameră.");
+            MessageBox.Show("Selecteaza o camera.");
             return;
         }
 
         
-        if (MessageBox.Show($"Sigur ștergi camera {roomToDelete.Number}?", "Confirmare", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+        if (MessageBox.Show($"Sigur stergi camera {roomToDelete.Number}?", "Confirmare", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
         {
             try
             {
@@ -160,7 +160,7 @@ public class RoomManagementViewModel : ViewModelBase
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Nu s-a putut șterge: {ex.Message}");
+                MessageBox.Show($"Nu s-a putut sterge: {ex.Message}");
             }
         }
     }

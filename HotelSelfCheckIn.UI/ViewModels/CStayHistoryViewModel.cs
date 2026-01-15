@@ -30,15 +30,15 @@ public class CStayHistoryViewModel : ViewModelBase
     {
         PastStays.Clear();
         
-        // Luăm toate rezervările și le filtrăm pe cele care NU sunt Active
+        // Luam toate rezervarile si le filtram pe cele care NU sunt Active
         var history = _manager.GetMyReservations(_client)
             .Where(r => r.Status == ReservationStatus.Completed || 
                         r.Status == ReservationStatus.Cancelled);
 
         foreach (var res in history)
         {
-            // Calculăm prețul informativ (ar putea fi stocat în Reservation pe viitor)
-            // Căutăm camera să vedem prețul ei actual sau folosim o valoare default
+            // Calculam pretul informativ (ar putea fi stocat In Reservation pe viitor)
+            // Cautam camera sa vedem pretul ei actual sau folosim o valoare default
             decimal pricePerNight = 100; // Valoare fallback
 
             int nights = (res.EndDate.Date - res.StartDate.Date).Days;

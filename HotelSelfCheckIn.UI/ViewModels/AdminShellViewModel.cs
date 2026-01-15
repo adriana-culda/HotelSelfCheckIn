@@ -57,7 +57,7 @@ public class AdminShellViewModel : ViewModelBase
             switch (destination)
             {
                 case "Dashboard":
-                    // 1. PROTECȚIE: Esti deja pe Dashboard? Atunci nu facem nimic.
+                    // 1. PROTECTIE: Esti deja pe Dashboard? Atunci nu facem nimic.
                     if (CurrentView is AdminViewModel) return;
                     
                     // 2. Navigare

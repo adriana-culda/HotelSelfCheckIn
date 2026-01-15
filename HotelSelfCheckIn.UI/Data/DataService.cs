@@ -17,7 +17,7 @@ public class DataService
         string appPath = AppDomain.CurrentDomain.BaseDirectory;
         _dataFolder = Path.Combine(appPath, "SavedData");
 
-        // Dacă folderul nu exista, îl cream
+        // Daca folderul nu exista, il cream
 
         if (!Directory.Exists(_dataFolder))
         {
@@ -43,13 +43,13 @@ public class DataService
     {
         string fullPath = Path.Combine(_dataFolder, fileName);
 
-        // Daca fisierul nu exista, returnăm o valoare goala
+        // Daca fisierul nu exista, returnam o valoare goala
         if (!File.Exists(fullPath))
         {
             return Activator.CreateInstance<T>();
         }
 
-        // Citim textul și îl transformăm înapoi în obiecte
+        // Citim textul si Il transformam Inapoi In obiecte
         
         string json = File.ReadAllText(fullPath);
         return JsonSerializer.Deserialize<T>(json);

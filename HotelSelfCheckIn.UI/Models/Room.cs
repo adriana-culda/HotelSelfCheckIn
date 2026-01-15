@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization; // Adaugă acest using
+using System.Text.Json.Serialization; // Adauga acest using
 
 namespace HotelSelfCheckIn.UI.Models;
 //Pt. transf din fisier JSON in C#

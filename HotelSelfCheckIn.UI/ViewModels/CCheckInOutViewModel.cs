@@ -34,7 +34,7 @@ public class CCheckInOutViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(BookingCode)) return;
 
-        // Căutăm rezervarea care aparține clientului și are codul introdus (primele 8 caractere ale GUID-ului)
+        // Cautam rezervarea care apartine clientului si are codul introdus (primele 8 caractere ale GUID-ului)
         var reservation = _manager.GetMyReservations(_client)
             .FirstOrDefault(r => r.ReservationID.ToString().ToUpper().StartsWith(BookingCode.ToUpper()));
 
@@ -50,9 +50,8 @@ public class CCheckInOutViewModel : ViewModelBase
             return;
         }
 
-        // Actualizăm statusul camerei în "Occupied" prin Manager
-        // Notă: Metoda SetRoomStatus din Manager-ul tău cere un obiect Admin, 
-        // poți crea o metodă similară pentru client sau trimite null dacă nu ai verificări stricte.
+        // Actualizam statusul camerei In "Occupied" prin Manager
+        
         _manager.SetRoomStatus(null, reservation.RoomNumber, RoomStatus.Occupied);
         
         MessageBox.Show($"Check-in successful! Welcome to room {reservation.RoomNumber}.");
@@ -67,10 +66,10 @@ public class CCheckInOutViewModel : ViewModelBase
 
         if (reservation != null && reservation.Status == ReservationStatus.Active)
         {
-            // 1. Eliberăm camera (o punem în Cleaning sau Free)
+            // 1. Eliberam camera (o punem In Cleaning sau Free)
             _manager.SetRoomStatus(null, reservation.RoomNumber, RoomStatus.Cleaning);
 
-            // 2. Marcăm rezervarea ca finalizată
+            // 2. Marcam rezervarea ca finalizata
             _manager.ForceChangeStatus(null, reservation.ReservationID, ReservationStatus.Completed);
 
             MessageBox.Show("Check-out successful! We hope you enjoyed your stay.");

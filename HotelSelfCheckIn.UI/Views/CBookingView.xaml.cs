@@ -9,7 +9,5 @@ public partial class CBookingView : UserControl
         InitializeComponent();
     }
 
-    // Am eliminat metoda BtnConfirm_Click pentru că logica 
-    // se mută în ViewModel (prin ConfirmBookingCommand).
-    // Astfel, fișierul rămâne "curat", specific arhitecturii MVVM.
+    
 }

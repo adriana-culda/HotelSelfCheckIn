@@ -46,30 +46,29 @@ public class LoginViewModel : ViewModelBase
 
     private void ExecuteLogin(object parameter)
     {
-        // 1. EXTRAGEM PAROLA DIN PARAMETRU (Aici era eroarea ta)
+        // 1. EXTRAGEM PAROLA DIN PARAMETRU 
         // Parameter este controlul PasswordBox trimis din XAML
         var passwordBox = parameter as PasswordBox;
         var password = passwordBox?.Password; // Extragem string-ul
 
-        // Validare simplă
+        // Validare simpla
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
         {
-            ErrorMessage = "Te rog introdu username și parola.";
+            ErrorMessage = "Te rog introdu username si parola.";
             return;
         }
 
-        // 2. Încercăm autentificarea
+        // 2. Incercam autentificarea
         var user = _manager.Authenticate(Username, password);
 
         if (user == null)
         {
-            ErrorMessage = "Username sau parolă incorectă!";
+            ErrorMessage = "Username sau parola incorecta!";
             return;
         }
 
         // 3. SUCCES!
-        // Nu facem "if user is Admin" aici. 
-        // Doar apelăm callback-ul. MainViewModel va decide ce fereastră să deschidă.
+        // Doar apelam callback-ul. MainViewModel va decide ce fereastra sa deschida.
         _loginSuccessCallback?.Invoke(user);
     }
 }
