@@ -4,7 +4,7 @@ Acest proiect reprezintă un **sistem integrat pentru gestiunea unui micro-hotel
 
 ---
 
-### 🏗️ Arhitectură și Concepte Tehnice (Cerințe Nota 10)
+### 🏗️ Arhitectură și Concepte Tehnice
 Pentru a asigura un cod curat și scalabil, am implementat următoarele principii:
 
 * **Arhitectură pe Layere / MVVM:** Separarea clară între interfața grafică și logica de business.
