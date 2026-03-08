@@ -45,4 +45,4 @@ Aplicația pune accent pe **robustetea datelor**:
 * **Version Control:** Git
 
 ---
-*Proiect realizat pentru disciplina de programare / ingineria sistemelor.*
+*Proiect realizat pentru disciplina Programare Orientată pe Obiecte.*
