@@ -1,4 +1,4 @@
-# 🏨 Hotel Self Check-In System (C# Desktop App)
+# Hotel Self Check-In System (C# Desktop App)
 
 Acest proiect reprezintă un **sistem integrat pentru gestiunea unui micro-hotel**, facilitând procesul de rezervare și check-in/out automatizat. Aplicația este dezvoltată ca **proiect pentru facultate**, vizând implementarea unor concepte avansate de **Programare Orientată Obiect** și **Arhitectură Software**.
 
