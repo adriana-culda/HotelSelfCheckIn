@@ -14,22 +14,24 @@ Pentru a asigura un cod curat și scalabil, am implementat următoarele principi
 
 **Roluri și Funcționalități**
 
- **Administrator Hotel**
+  Administrator Hotel
 * **Gestiune Camere:** Operații **CRUD** pe entitățile de tip cameră și setarea stării (*Liber, Ocupat, Curățenie, Indisponibil*).
 * **Monitorizare Rezervări:** Vizualizarea istoricului și a rezervărilor active.
 * **Configurare:** Definirea regulilor de check-in/out și a limitărilor de utilizare.
 
-**Client**
+  Client
 * **Booking Engine:** Căutare camere după perioadă sau facilități și **creare rezervări**.
 * **Self Service:** Efectuarea digitală a procesului de **check-in și check-out**.
 * **Personal Dashboard:** Gestionarea, anularea și vizualizarea istoricului sejururilor proprii.
 
-###  Persistența Datelor
+**Persistența Datelor**
+
 Aplicația pune accent pe **robustetea datelor**:
 * **Salvare Automată:** Toate modificările asupra utilizatorilor și camerelor sunt salvate în fișiere.
 * **Error Handling:** Gestionarea scenariilor în care fișierele sunt corupte sau lipsesc prin inițializare controlată.
 
-###  Tehnologii Utilizate
+**Tehnologii Utilizate**
+
 * **Limbaj:** **C# (.NET Core)**
 * **IDE principal:** **JetBrains Rider** 
 * **UI Framework:** **WPF**
