@@ -2,9 +2,7 @@
 
 Acest proiect reprezintă un **sistem integrat pentru gestiunea unui micro-hotel**, facilitând procesul de rezervare și check-in/out automatizat. Aplicația este dezvoltată ca **proiect pentru facultate**, vizând implementarea unor concepte avansate de **Programare Orientată Obiect** și **Arhitectură Software**.
 
----
-
-### 🏗️ Arhitectură și Concepte Tehnice
+###  Arhitectură și Concepte Tehnice
 Pentru a asigura un cod curat și scalabil, am implementat următoarele principii:
 
 * **Arhitectură pe Layere / MVVM:** Separarea clară între interfața grafică și logica de business.
@@ -14,35 +12,26 @@ Pentru a asigura un cod curat și scalabil, am implementat următoarele principi
 * **Logging:** Monitorizarea acțiunilor și erorilor folosind **ILogger**.
 * **Persistența Datelor:** Salvare și încărcare automată din **fișiere** (cu tratarea excepțiilor pentru date invalide sau lipsă).
 
----
+### Roluri și Funcționalități
 
-### 👥 Roluri și Funcționalități
-
-#### 🔑 Administrator Hotel
+####  Administrator Hotel
 * **Gestiune Camere:** Operații **CRUD** pe entitățile de tip cameră și setarea stării (*Liber, Ocupat, Curățenie, Indisponibil*).
 * **Monitorizare Rezervări:** Vizualizarea istoricului și a rezervărilor active.
 * **Configurare:** Definirea regulilor de check-in/out și a limitărilor de utilizare.
 
-#### 👤 Client
+####  Client
 * **Booking Engine:** Căutare camere după perioadă sau facilități și **creare rezervări**.
 * **Self Service:** Efectuarea digitală a procesului de **check-in și check-out**.
 * **Personal Dashboard:** Gestionarea, anularea și vizualizarea istoricului sejururilor proprii.
 
----
-
-### 💾 Persistența Datelor
+###  Persistența Datelor
 Aplicația pune accent pe **robustetea datelor**:
 * **Salvare Automată:** Toate modificările asupra utilizatorilor și camerelor sunt salvate în fișiere.
 * **Error Handling:** Gestionarea scenariilor în care fișierele sunt corupte sau lipsesc prin inițializare controlată.
 
----
-
-### 🛠️ Tehnologii Utilizate
+###  Tehnologii Utilizate
 * **Limbaj:** **C# (.NET Core)**
-* **IDE principal:** **JetBrains Rider** 🖥️
+* **IDE principal:** **JetBrains Rider** 
 * **UI Framework:** **WPF**
 * **Biblioteci:** `Microsoft.Extensions.Hosting`, `Microsoft.Extensions.Logging`
 * **Version Control:** Git
-
----
-*Proiect realizat pentru disciplina Programare Orientată pe Obiecte.*
